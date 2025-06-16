@@ -66,34 +66,35 @@ def callback():
         current_app.logger.error("⚠️ Missing access_token in result: %r", result)
         return f"Auth failed: {result.get('error_description')}", 400
 
-    expires_at = datetime.utcnow() + timedelta(seconds=int(result["expires_in"]))
+    # 👇 Initialize MicrosoftGraphService with initial token info
     svc = MicrosoftGraphService(
         access_token=result["access_token"],
         refresh_token=result.get("refresh_token"),
-        token_expires=expires_at.timestamp()
+        token_expires=(datetime.utcnow() + timedelta(seconds=int(result["expires_in"]))).timestamp()
     )
 
     try:
-        profile = svc.get_user_info()
+        profile = svc.get_user_info()  # This may refresh the token if expired
     except OneDriveServiceError as e:
         current_app.logger.error("❌ Profile fetch failed: %s", e)
         return f"Failed to fetch profile: {e}", 500
 
+    # ✅ Pull the latest tokens from the service AFTER possible refresh
     user = User.query.filter_by(ms_id=profile["id"]).first()
     if not user:
         user = User(
             ms_id=profile["id"],
             name=profile.get("displayName"),
             email=profile.get("userPrincipalName"),
-            access_token=result["access_token"],
-            refresh_token=result.get("refresh_token"),
-            token_expires=expires_at
+            access_token=svc.access_token,
+            refresh_token=svc.refresh_token,
+            token_expires=datetime.utcfromtimestamp(svc.token_expires)
         )
         db.session.add(user)
     else:
-        user.access_token = result["access_token"]
-        user.refresh_token = result.get("refresh_token")
-        user.token_expires = expires_at
+        user.access_token = svc.access_token
+        user.refresh_token = svc.refresh_token
+        user.token_expires = datetime.utcfromtimestamp(svc.token_expires)
 
     db.session.commit()
     session["user_id"] = user.id
@@ -103,5 +104,5 @@ def callback():
     except OneDriveServiceError as e:
         current_app.logger.error("⚠️ Ingestion error: %s", e)
 
-    # ✅ Redirect to your main dashboard page
-    return redirect(url_for("search.browse"))
+    # ✅ Now redirect to dashboard
+    return redirect(url_for("files.browse"))

@@ -11,6 +11,7 @@ class BaseConfig:
 
     # PostgreSQL setup
     SQLALCHEMY_DATABASE_URI = os.getenv("DATABASE_URL", "postgresql://postgres:admin@localhost:5432/your_db")
+    DATABASE_URL = SQLALCHEMY_DATABASE_URI  # ✅ optional: for logging/debug visibility
     SQLALCHEMY_TRACK_MODIFICATIONS = False
 
     # Elasticsearch setup (plain HTTP, without TLS options)

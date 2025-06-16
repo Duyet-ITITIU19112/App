@@ -25,39 +25,40 @@ class MicrosoftGraphService:
 
     def _ensure_token(self):
         now = time.time()
+        current_app.logger.debug(
+            "🧠 Checking token: has_token=%s, expires_in=%.0fs, now=%.0f",
+            bool(self.access_token),
+            self.token_expires - now,
+            now
+        )
+
         if not self.access_token or now >= self.token_expires:
             scopes_all = current_app.config["SCOPE"].split()
-            # same filtering logic as before
             reserved = {"openid", "profile", "offline_access"}
             scopes = [s for s in scopes_all if s not in reserved]
             current_app.logger.debug("🔁 Refreshing token with scopes: %r", scopes)
 
-            # Try silent first
-            accounts = self.app.get_accounts()
-            result = None
-            if accounts:
-                result = self.app.acquire_token_silent(scopes, account=accounts[0])
-
-            # If that fails, use refresh_token
-            if not result or "access_token" not in result:
-                try:
-                    result = self.app.acquire_token_by_refresh_token(
-                        self.refresh_token,
-                        scopes=scopes
-                    )
-                except ValueError as e:
-                    current_app.logger.error("❌ Refresh token Msal ValueError: scopes=%r; error=%s", scopes, e)
-                    raise OneDriveServiceError(f"Token refresh failed: {e}")
+            try:
+                result = self.app.acquire_token_by_refresh_token(
+                    self.refresh_token,
+                    scopes=scopes
+                )
+            except ValueError as e:
+                current_app.logger.error("❌ Refresh token ValueError: %s", e)
+                raise OneDriveServiceError("Token refresh failed")
 
             if not result or "access_token" not in result:
+                current_app.logger.error("❌ Failed to refresh token: %r", result)
                 raise OneDriveServiceError(result.get("error_description", "Token refresh failed"))
 
-            # Update tokens
             self.access_token = result["access_token"]
             self.refresh_token = result.get("refresh_token", self.refresh_token)
             self.token_expires = now + int(result["expires_in"])
+            current_app.logger.debug("✅ Token refreshed. Expires at %.0f", self.token_expires)
 
         self.headers = {"Authorization": f"Bearer {self.access_token}"}
+        if not self.headers.get("Authorization"):
+            raise OneDriveServiceError("Authorization header was not set")
 
     def get_auth_url(self, state: str) -> str:
         return self.app.get_authorization_request_url(
@@ -118,13 +119,12 @@ class MicrosoftGraphService:
         resp = requests.get(url, headers=self.headers)
         if resp.status_code != 200:
             raise OneDriveServiceError(resp.text)
+
+
         items = resp.json().get("value", [])
-    # Optional sorting to list folders first:
         items.sort(key=lambda i: ("file" in i, i["name"].lower()))
         return items
 
-    
-    
     def get_item(self, item_id: str) -> dict:
         self._ensure_token()
         url = f"{self.BASE_URL}/me/drive/items/{item_id}"
@@ -132,15 +132,7 @@ class MicrosoftGraphService:
         if resp.status_code != 200:
             raise OneDriveServiceError(resp.text)
         return resp.json()
-    
-    def get_embed_link(self, item_id: str) -> str:
-        self._ensure_token()
-        url = f"https://graph.microsoft.com/v1.0/me/drive/items/{item_id}/preview"
-        resp = requests.post(url, headers=self.headers)
-        if resp.status_code != 200:
-            raise OneDriveServiceError(resp.text)
-        return resp.json().get("previewLink")
-    
+
     def get_embed_link(self, item_id):
         self._ensure_token()
         url = f"https://graph.microsoft.com/v1.0/me/drive/items/{item_id}/preview"

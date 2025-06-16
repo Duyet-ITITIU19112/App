@@ -4,6 +4,7 @@ from src.services.parser import parse_stream
 from src.services.elastic_service import bulk_index_documents  # uses _bulk API
 from src.models.document_model import Document
 
+
 def ingest_user_onedrive_files(user):
     """
     Ingest all .txt and .docx files from a user's OneDrive:
@@ -28,6 +29,7 @@ def ingest_user_onedrive_files(user):
         name = item.get("name", "")
         if not name.lower().endswith((".txt", ".docx")):
             continue
+            print(f"📁 {item.get('parentReference', {}).get('path', '')}/{name}")
 
         try:
             content_bytes = svc.fetch_file_content(item["id"])

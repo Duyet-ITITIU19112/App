@@ -3,7 +3,7 @@ from src.models.user_model import User
 from src.services.microsoft_graph import MicrosoftGraphService, OneDriveServiceError
 from src.services.elastic_service import search_bm25
 
-search_bp = Blueprint("search", __name__, url_prefix="/files")
+search_bp = Blueprint("files", __name__, url_prefix="/files")
 
 
 def get_graph_service_for_user():
