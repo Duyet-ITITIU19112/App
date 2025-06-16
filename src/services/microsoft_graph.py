@@ -89,10 +89,8 @@ class MicrosoftGraphService:
         )
         if resp.status_code != 200:
             raise OneDriveServiceError(resp.text)
-        return [
-            item for item in resp.json().get("value", [])
-            if "file" in item and item["name"].endswith((".txt", ".docx"))
-        ]
+        return resp.json().get("value", [])
+
 
     def fetch_file_content(self, file_id: str) -> bytes:
         self._ensure_token()
@@ -114,3 +112,71 @@ class MicrosoftGraphService:
         if resp.status_code != 200:
             raise OneDriveServiceError(resp.text)
         return resp.json()
+    def list_children(self, parent_id: str) -> list:
+        self._ensure_token()
+        url = f"https://graph.microsoft.com/v1.0/me/drive/items/{parent_id}/children"
+        resp = requests.get(url, headers=self.headers)
+        if resp.status_code != 200:
+            raise OneDriveServiceError(resp.text)
+        items = resp.json().get("value", [])
+    # Optional sorting to list folders first:
+        items.sort(key=lambda i: ("file" in i, i["name"].lower()))
+        return items
+
+    
+    
+    def get_item(self, item_id: str) -> dict:
+        self._ensure_token()
+        url = f"{self.BASE_URL}/me/drive/items/{item_id}"
+        resp = requests.get(url, headers=self.headers)
+        if resp.status_code != 200:
+            raise OneDriveServiceError(resp.text)
+        return resp.json()
+    
+    def get_embed_link(self, item_id: str) -> str:
+        self._ensure_token()
+        url = f"https://graph.microsoft.com/v1.0/me/drive/items/{item_id}/preview"
+        resp = requests.post(url, headers=self.headers)
+        if resp.status_code != 200:
+            raise OneDriveServiceError(resp.text)
+        return resp.json().get("previewLink")
+    
+    def get_embed_link(self, item_id):
+        self._ensure_token()
+        url = f"https://graph.microsoft.com/v1.0/me/drive/items/{item_id}/preview"
+        resp = requests.post(url, headers=self.headers, json={})
+        if resp.status_code != 200:
+            raise OneDriveServiceError(resp.text)
+        return resp.json().get("getUrl")
+
+    def list_all_files_recursively(self, folder_id=None):
+        self._ensure_token()
+    
+        base_url = "https://graph.microsoft.com/v1.0/me/drive"
+        path = f"/items/{folder_id}/children" if folder_id else "/root/children"
+        url = f"{base_url}{path}"
+    
+        all_files = []
+
+        while url:
+            resp = requests.get(url, headers=self.headers)
+            if resp.status_code != 200:
+                raise OneDriveServiceError(f"Graph error: {resp.text}")
+            data = resp.json()
+
+            for item in data.get("value", []):
+                if "folder" in item:
+                    try:
+                        sub_items = self.list_all_files_recursively(item["id"])
+                        all_files.extend(sub_items)
+                    except OneDriveServiceError as e:
+                        print(f"⚠️ Skipping folder '{item['name']}': {e}")
+                elif "file" in item:
+                    all_files.append(item)
+
+            url = data.get("@odata.nextLink")  # pagination
+
+        return all_files
+
+
+

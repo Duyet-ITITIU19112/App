@@ -1,17 +1,16 @@
 from io import BytesIO
 from docx import Document
 
-def parse_stream(filename: str, file_bytes: bytes) -> str:
-    """
-    Parses .txt or .docx content into plain text.
-    """
+def parse_stream(filename: str, content: bytes) -> str:
     if filename.lower().endswith(".txt"):
-        return file_bytes.decode("utf-8", errors="ignore")
+        return content.decode("utf-8", errors="ignore")
+
     elif filename.lower().endswith(".docx"):
         try:
-            doc = Document(BytesIO(file_bytes))
+            doc = Document(io.BytesIO(content))
             return "\n".join(p.text for p in doc.paragraphs)
         except Exception as e:
-            return f"[Error reading .docx]: {e}"
+            raise ValueError(f"Failed to parse .docx: {e}")
+
     else:
-        return ""
+        raise ValueError("Unsupported file type")

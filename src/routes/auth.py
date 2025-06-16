@@ -104,4 +104,4 @@ def callback():
         current_app.logger.error("⚠️ Ingestion error: %s", e)
 
     # ✅ Redirect to your main dashboard page
-    return redirect(url_for("main.dashboard"))
+    return redirect(url_for("search.browse"))

@@ -1,0 +1,16 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Preview File</title>
+  <style>
+    body, html { margin: 0; padding: 0; height: 100%; }
+    iframe { width: 100%; height: 100%; border: none; }
+    .back-link { position: fixed; top: 1rem; left: 1rem; background: #fff; padding: 0.5rem; border-radius: 4px; }
+  </style>
+</head>
+<body>
+  <a href="{{ url_for('search.browse') }}" class="back-link">← Back to files</a>
+  <iframe src="{{ preview_url }}" allowfullscreen sandbox="allow-scripts allow-same-origin"></iframe>
+</body>
+</html>

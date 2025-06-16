@@ -1,0 +1,105 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>OneDrive Browser</title>
+  <style>
+    body { font-family: sans-serif; margin: 2rem; }
+    ul { list-style: none; padding: 0; }
+    li { margin: 0.5rem 0; }
+    a { text-decoration: none; color: #0066CC; }
+    a:hover { text-decoration: underline; }
+    .folder { font-weight: bold; }
+    .file { margin-left: 1rem; }
+    .snippet { font-size: 0.9rem; color: #555; margin-top: 0.2rem; }
+  </style>
+</head>
+<body>
+  <h1>Your OneDrive Files</h1>
+
+  <!-- 🔍 Search Form -->
+  <form action="{{ url_for('search.browse') }}" method="get" style="margin-bottom: 1rem;">
+    <input type="text" name="q" placeholder="🔍 Search your files..." value="{{ request.args.get('q', '') }}" style="width: 60%; padding: 0.4rem;">
+    <button type="submit">Search</button>
+    {% if folder_id %}
+      <input type="hidden" name="folder_id" value="{{ folder_id }}">
+      <a href="{{ url_for('search.browse') }}">🔙 Go Back</a>
+    {% endif %}
+  </form>
+
+  <!-- 📁 File List -->
+  <ul>
+    {% for it in items %}
+      <li class="{{ 'folder' if it.get('folder') else 'file' }}">
+        {% if it.get('folder') %}
+          📁 
+          <a href="{{ url_for('search.browse', folder_id=it.id) }}">
+            {{ it.name }}
+          </a>
+        {% else %}
+          📄 
+          <a href="#" class="file-preview" data-id="{{ it.id }}">
+            {{ it.name }}
+          </a>
+          {% if it.snippet %}
+            <div class="snippet">{{ it.snippet | safe }}</div>
+          {% endif %}
+        {% endif %}
+      </li>
+    {% else %}
+      <li>No files or folders here.</li>
+    {% endfor %}
+  </ul>
+
+  <!-- ⚡ Preview Preloading Logic -->
+  <script>
+    const previewCache = {};
+
+    document.querySelectorAll(".file-preview").forEach(el => {
+      const fileId = el.dataset.id;
+
+      // Preload preview URL on hover
+      el.addEventListener("mouseenter", () => {
+        if (!previewCache[fileId]) {
+          fetch(`/files/preview-url/${fileId}`)
+            .then(res => res.json())
+            .then(data => {
+              if (data.preview_url) {
+                previewCache[fileId] = data.preview_url;
+              }
+            });
+        }
+      });
+
+      // One-click preview with guaranteed tab open
+      el.addEventListener("click", (e) => {
+        e.preventDefault();
+
+        const tab = window.open("", "_blank");
+        tab.document.write("<p style='font-family:sans-serif;'>🔄 Loading preview…</p>");
+
+        const launch = (url) => {
+          if (url) tab.location = url;
+          else tab.document.write("<p>Unable to load preview.</p>");
+        };
+
+        if (previewCache[fileId]) {
+          launch(previewCache[fileId]);
+        } else {
+          fetch(`/files/preview-url/${fileId}`)
+            .then(res => res.json())
+            .then(data => {
+              if (data.preview_url) {
+                previewCache[fileId] = data.preview_url;
+                launch(data.preview_url);
+              } else {
+                launch(null);
+              }
+            })
+            .catch(() => launch(null));
+        }
+      });
+    });
+  </script>
+</body>
+</html>

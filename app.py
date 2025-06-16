@@ -9,6 +9,7 @@ from src.routes.auth import auth_bp
 from src.routes.search import search_bp
 from src.routes.picker import picker_bp
 from src.routes.main import main_bp
+from src.routes.search import search_bp
 
 def create_app():
     app = Flask(__name__)
@@ -22,9 +23,10 @@ def create_app():
         db.create_all()
         create_index_if_not_exists()
         app.register_blueprint(auth_bp)
-        app.register_blueprint(search_bp)
         app.register_blueprint(picker_bp)
         app.register_blueprint(main_bp)
+        app.register_blueprint(search_bp)
+        app.logger.info("🔧 Application initialized with config: %s", app.config)
 
         @app.route("/")
         def index():
@@ -33,4 +35,4 @@ def create_app():
     return app
 
 if __name__ == "__main__":
-    create_app().run(host="localhost", port=5000, debug=True)
+    create_app().run(host="localhost", port=5000, debug=True,threaded=True)

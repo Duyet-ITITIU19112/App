@@ -6,4 +6,4 @@ main_bp = Blueprint("main", __name__)
 def dashboard():
     if not session.get("user_id"):
         return redirect(url_for("auth.login"))
-    return render_template("dashboard.html")
+    return render_template("index.html")
