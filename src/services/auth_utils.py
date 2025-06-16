@@ -4,14 +4,15 @@ from datetime import datetime
 from src.models import db, User
 
 
-def get_non_reserved_scopes():
-    # Only filter 'openid' and 'profile' to keep 'offline_access' for refresh tokens
-    reserved = {"openid", "profile"}
-    scopes = current_app.config["SCOPE"].split()
+RESERVED_SCOPES = {"openid", "profile", "offline_access"}  # <-- make sure this includes offline_access
 
-    # Logging to verify contents
+def get_non_reserved_scopes():
+    scope_string = current_app.config.get("SCOPE", "")
+    scopes = scope_string.split()
+
     current_app.logger.debug("🔍 All configured scopes: %r", scopes)
-    filtered = [s for s in scopes if s not in reserved]
+
+    filtered = [s for s in scopes if s not in RESERVED_SCOPES]
     current_app.logger.debug("✅ Filtered non-reserved scopes: %r", filtered)
 
     return filtered

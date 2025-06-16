@@ -18,12 +18,12 @@
   <h1>Your OneDrive Files</h1>
 
   <!-- 🔍 Search Form -->
-  <form action="{{ url_for('search.browse') }}" method="get" style="margin-bottom: 1rem;">
+  <form action="{{ url_for('files.browse') }}" method="get" style="margin-bottom: 1rem;">
     <input type="text" name="q" placeholder="🔍 Search your files..." value="{{ request.args.get('q', '') }}" style="width: 60%; padding: 0.4rem;">
     <button type="submit">Search</button>
     {% if folder_id %}
       <input type="hidden" name="folder_id" value="{{ folder_id }}">
-      <a href="{{ url_for('search.browse') }}">🔙 Go Back</a>
+      <a href="{{ url_for('files.browse') }}">🔙 Go Back</a>
     {% endif %}
   </form>
 
@@ -33,7 +33,7 @@
       <li class="{{ 'folder' if it.get('folder') else 'file' }}">
         {% if it.get('folder') %}
           📁 
-          <a href="{{ url_for('search.browse', folder_id=it.id) }}">
+          <a href="{{ url_for('files.browse', folder_id=it.id) }}">
             {{ it.name }}
           </a>
         {% else %}

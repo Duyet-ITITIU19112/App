@@ -5,12 +5,16 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="c457582c-3f14-44e1-a2aa-b358e5473bfa" name="Changes" comment="e">
+      <change beforePath="$PROJECT_DIR$/.env" beforeDir="false" afterPath="$PROJECT_DIR$/.env" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/app.py" beforeDir="false" afterPath="$PROJECT_DIR$/app.py" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/flask_session/fe5ddb91a77734f3263cdc0d5301de87" beforeDir="false" afterPath="$PROJECT_DIR$/flask_session/fe5ddb91a77734f3263cdc0d5301de87" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/controllers/ingest_controller.py" beforeDir="false" afterPath="$PROJECT_DIR$/src/controllers/ingest_controller.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/models/__init__.py" beforeDir="false" afterPath="$PROJECT_DIR$/src/models/__init__.py" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/routes/auth.py" beforeDir="false" afterPath="$PROJECT_DIR$/src/routes/auth.py" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/services/auth_utils.py" beforeDir="false" afterPath="$PROJECT_DIR$/src/services/auth_utils.py" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/services/microsoft_graph.py" beforeDir="false" afterPath="$PROJECT_DIR$/src/services/microsoft_graph.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/templates/onedrive_browser.html" beforeDir="false" afterPath="$PROJECT_DIR$/templates/onedrive_browser.html" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/templates/preview.html" beforeDir="false" afterPath="$PROJECT_DIR$/templates/preview.html" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -256,7 +260,23 @@
       <option name="project" value="LOCAL" />
       <updated>1750080128285</updated>
     </task>
-    <option name="localTasksCounter" value="7" />
+    <task id="LOCAL-00007" summary="e">
+      <option name="closed" value="true" />
+      <created>1750084464509</created>
+      <option name="number" value="00007" />
+      <option name="presentableId" value="LOCAL-00007" />
+      <option name="project" value="LOCAL" />
+      <updated>1750084464509</updated>
+    </task>
+    <task id="LOCAL-00008" summary="e">
+      <option name="closed" value="true" />
+      <created>1750084558370</created>
+      <option name="number" value="00008" />
+      <option name="presentableId" value="LOCAL-00008" />
+      <option name="project" value="LOCAL" />
+      <updated>1750084558370</updated>
+    </task>
+    <option name="localTasksCounter" value="9" />
     <servers />
   </component>
   <component name="UnknownFeatures">

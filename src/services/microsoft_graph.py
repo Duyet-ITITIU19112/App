@@ -10,7 +10,7 @@ class OneDriveServiceError(Exception):
     pass
 
 class MicrosoftGraphService:
-    def __init__(self, access_token=None, refresh_token=None, token_expires=None):
+    def __init__(self, access_token=None, refresh_token=None, token_expires=None, user_id=None):
         cfg = current_app.config
         authority = cfg["AUTHORITY"]
 
@@ -21,9 +21,11 @@ class MicrosoftGraphService:
         )
         self.access_token = access_token
         self.refresh_token = refresh_token
-        # token_expires can be a datetime.timestamp() or float since epoch
+        self.user_id = user_id
         self.token_expires = float(token_expires) if token_expires else 0
         self.headers = {}
+
+    BASE_URL = "https://graph.microsoft.com/v1.0"
 
     def _ensure_token(self):
         now = time.time()
@@ -35,9 +37,8 @@ class MicrosoftGraphService:
         )
 
         if not self.access_token or now >= self.token_expires:
-            # Refresh is required
             scopes_all = current_app.config["SCOPE"].split()
-            reserved = {"openid", "profile"}
+            reserved = {"openid", "profile", "offline_access"}
             scopes = [s for s in scopes_all if s not in reserved]
             current_app.logger.debug("🔁 Refreshing token with scopes: %r", scopes)
 
@@ -54,20 +55,21 @@ class MicrosoftGraphService:
                 current_app.logger.error("❌ Failed to refresh token: %r", result)
                 raise OneDriveServiceError(result.get("error_description", "Token refresh failed"))
 
-            # ✅ Update current instance with new token values
             self.access_token = result["access_token"]
             self.refresh_token = result.get("refresh_token", self.refresh_token)
             self.token_expires = now + int(result["expires_in"])
             current_app.logger.debug("✅ Token refreshed. Expires at %.0f", self.token_expires)
 
-            # ✅ Save updated token to database
-            save_updated_token(self.user_id, {
-                "access_token": self.access_token,
-                "refresh_token": self.refresh_token,
-                "expires_at": self.token_expires,
-            })
+            # ✅ NEW: Skip saving if user_id is missing
+            if self.user_id:
+                save_updated_token(self.user_id, {
+                    "access_token": self.access_token,
+                    "refresh_token": self.refresh_token,
+                    "expires_at": self.token_expires,
+                })
+            else:
+                current_app.logger.debug("⚠️ Token refresh skipped DB update — user_id is None")
 
-        # Set Authorization header
         self.headers = {"Authorization": f"Bearer {self.access_token}"}
 
         if not self.headers.get("Authorization"):
@@ -86,7 +88,6 @@ class MicrosoftGraphService:
             scopes=current_app.config["SCOPE"].split(),
             redirect_uri=current_app.config["REDIRECT_URI"]
         )
-        current_app.logger.debug("🎟️ Token result: %r", result)
         if "access_token" not in result:
             raise OneDriveServiceError(result.get("error_description", "Auth failed"))
 
@@ -183,6 +184,11 @@ class MicrosoftGraphService:
             url = data.get("@odata.nextLink")  # pagination
 
         return all_files
+
+    def ensure_valid_token(self):
+        """Public method to ensure token is valid and refresh if needed."""
+        self._ensure_token()
+
 
 
 
