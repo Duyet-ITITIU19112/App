@@ -81,12 +81,12 @@ class MicrosoftGraphService:
         )
 
     def acquire_token_by_code(self, code: str) -> dict:
-        current_app.logger.debug("🎟️ Token result: %r", result)
         result = self.app.acquire_token_by_authorization_code(
             code,
             scopes=current_app.config["SCOPE"].split(),
             redirect_uri=current_app.config["REDIRECT_URI"]
         )
+        current_app.logger.debug("🎟️ Token result: %r", result)
         if "access_token" not in result:
             raise OneDriveServiceError(result.get("error_description", "Auth failed"))
 
