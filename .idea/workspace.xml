@@ -4,22 +4,12 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="c457582c-3f14-44e1-a2aa-b358e5473bfa" name="Changes" comment="ori">
-      <change afterPath="$PROJECT_DIR$/flask_session/613237e42745f33e613e3b4737f89a42" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/flask_session/f053db3796624ce1a47f3beb4cf0588f" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/.gitignore" beforeDir="false" afterPath="$PROJECT_DIR$/.gitignore" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/misc.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/misc.xml" afterDir="false" />
+    <list default="true" id="c457582c-3f14-44e1-a2aa-b358e5473bfa" name="Changes" comment="e">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/app.py" beforeDir="false" afterPath="$PROJECT_DIR$/app.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/flask_session/2029240f6d1128be89ddc32729463129" beforeDir="false" afterPath="$PROJECT_DIR$/flask_session/2029240f6d1128be89ddc32729463129" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/flask_session/fe5ddb91a77734f3263cdc0d5301de87" beforeDir="false" afterPath="$PROJECT_DIR$/flask_session/fe5ddb91a77734f3263cdc0d5301de87" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/requirements.txt" beforeDir="false" afterPath="$PROJECT_DIR$/requirements.txt" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/config/config.py" beforeDir="false" afterPath="$PROJECT_DIR$/src/config/config.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/config/dev_config.py" beforeDir="false" afterPath="$PROJECT_DIR$/src/config/dev_config.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/config/production.py" beforeDir="false" afterPath="$PROJECT_DIR$/src/config/production.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/controllers/ingest_controller.py" beforeDir="false" afterPath="$PROJECT_DIR$/src/controllers/ingest_controller.py" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/routes/auth.py" beforeDir="false" afterPath="$PROJECT_DIR$/src/routes/auth.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/routes/search.py" beforeDir="false" afterPath="$PROJECT_DIR$/src/routes/search.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/services/auth_utils.py" beforeDir="false" afterPath="$PROJECT_DIR$/src/services/auth_utils.py" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/services/microsoft_graph.py" beforeDir="false" afterPath="$PROJECT_DIR$/src/services/microsoft_graph.py" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
@@ -258,7 +248,15 @@
       <option name="project" value="LOCAL" />
       <updated>1750041766159</updated>
     </task>
-    <option name="localTasksCounter" value="6" />
+    <task id="LOCAL-00006" summary="e">
+      <option name="closed" value="true" />
+      <created>1750080128285</created>
+      <option name="number" value="00006" />
+      <option name="presentableId" value="LOCAL-00006" />
+      <option name="project" value="LOCAL" />
+      <updated>1750080128285</updated>
+    </task>
+    <option name="localTasksCounter" value="7" />
     <servers />
   </component>
   <component name="UnknownFeatures">
@@ -322,6 +320,7 @@
     <MESSAGE value="a" />
     <MESSAGE value="r" />
     <MESSAGE value="ori" />
-    <option name="LAST_COMMIT_MESSAGE" value="ori" />
+    <MESSAGE value="e" />
+    <option name="LAST_COMMIT_MESSAGE" value="e" />
   </component>
 </project>

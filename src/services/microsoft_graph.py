@@ -2,6 +2,8 @@ import time
 import requests
 from flask import current_app
 from msal import ConfidentialClientApplication
+from src.services.auth_utils import save_updated_token
+
 
 class OneDriveServiceError(Exception):
     """Raised when Graph API operations fail or token refresh errors occur."""
@@ -33,8 +35,9 @@ class MicrosoftGraphService:
         )
 
         if not self.access_token or now >= self.token_expires:
+            # Refresh is required
             scopes_all = current_app.config["SCOPE"].split()
-            reserved = {"openid", "profile", "offline_access"}
+            reserved = {"openid", "profile"}
             scopes = [s for s in scopes_all if s not in reserved]
             current_app.logger.debug("🔁 Refreshing token with scopes: %r", scopes)
 
@@ -51,12 +54,22 @@ class MicrosoftGraphService:
                 current_app.logger.error("❌ Failed to refresh token: %r", result)
                 raise OneDriveServiceError(result.get("error_description", "Token refresh failed"))
 
+            # ✅ Update current instance with new token values
             self.access_token = result["access_token"]
             self.refresh_token = result.get("refresh_token", self.refresh_token)
             self.token_expires = now + int(result["expires_in"])
             current_app.logger.debug("✅ Token refreshed. Expires at %.0f", self.token_expires)
 
+            # ✅ Save updated token to database
+            save_updated_token(self.user_id, {
+                "access_token": self.access_token,
+                "refresh_token": self.refresh_token,
+                "expires_at": self.token_expires,
+            })
+
+        # Set Authorization header
         self.headers = {"Authorization": f"Bearer {self.access_token}"}
+
         if not self.headers.get("Authorization"):
             raise OneDriveServiceError("Authorization header was not set")
 
@@ -68,6 +81,7 @@ class MicrosoftGraphService:
         )
 
     def acquire_token_by_code(self, code: str) -> dict:
+        current_app.logger.debug("🎟️ Token result: %r", result)
         result = self.app.acquire_token_by_authorization_code(
             code,
             scopes=current_app.config["SCOPE"].split(),
