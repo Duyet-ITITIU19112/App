@@ -1,88 +1,36 @@
-# from flask import Flask,render_template
-# from flask_sqlalchemy import SQLAlchemy
-# from src.routes.login import api
-# from flask_session import Session
-# from src.routes.search import search_bp
-# import os
-# import requests
-#
-#
-# # Initialize the Flask app
-# app = Flask(__name__)
-#
-# app.config["SECRET_KEY"] = os.getenv("CLIENT_ID")  # Replace with a strong secret key
-# app.config["SESSION_TYPE"] = "filesystem"  # For production, use Redis or another backend
-# app.config["SESSION_PERMANENT"] = False
-# app.config["SESSION_COOKIE_HTTPONLY"] = True
-# app.config["SESSION_COOKIE_SECURE"] = True  # Use HTTPS
-# app.config["SESSION_COOKIE_SAMESITE"] = "Lax"
-# Session(app)# Initialize Flask-Session
-#
-#
-# # Register the blueprint
-# app.register_blueprint(api, url_prefix='/api')
-# app.register_blueprint(search_bp, url_prefix='/api')  # Register the search Blueprint
-#
-#
-# # After request: Set headers to prevent browser caching
-# @app.after_request
-# def add_header(response):
-#     response.headers["Cache-Control"] = "no-store, no-cache, must-revalidate, post-check=0, pre-check=0, max-age=0"
-#     response.headers["Pragma"] = "no-cache"
-#     response.headers["Expires"] = "0"
-#     return response
-#
-# @app.route("/")
-# def index():
-#     return render_template("index.html")
-#
-# # Run the application
-# if __name__ == '__main__':
-#     app.run(host='0.0.0.0', port=5000, debug=os.getenv("FLASK_DEBUG", "false").lower() == "true")
-
 # app.py
-
 import os
-from flask import Flask
+from flask import Flask, render_template
 from flask_session import Session
 from src.models import db
 from src.config.dev_config import DevConfig
 from src.services.elastic_service import create_index_if_not_exists
 from src.routes.auth import auth_bp
 from src.routes.search import search_bp
-
+from src.routes.picker import picker_bp
+from src.routes.main import main_bp
 
 def create_app():
     app = Flask(__name__)
-
-    # Load configuration
     app.config.from_object(DevConfig)
-
-    # Prepare server-side session (via filesystem)
     app.config.setdefault("SESSION_TYPE", "filesystem")
     Session(app)
 
-    # Initialize database
     db.init_app(app)
-
     with app.app_context():
         from src.models import user_model, document_model
         db.create_all()
-
-        # Prepare Elasticsearch index
         create_index_if_not_exists()
-
-        # Register blueprints
         app.register_blueprint(auth_bp)
         app.register_blueprint(search_bp)
+        app.register_blueprint(picker_bp)
+        app.register_blueprint(main_bp)
+
+        @app.route("/")
+        def index():
+            return render_template("index.html")
 
     return app
 
-
 if __name__ == "__main__":
-    # For quick manual testing without flask CLI
-    os.environ.setdefault("FLASK_ENV", "development")
-    os.environ.setdefault("FLASK_APP", __file__)
-    create_app().run(debug=True)
-
-
+    create_app().run(host="localhost", port=5000, debug=True)

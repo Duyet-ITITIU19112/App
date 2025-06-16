@@ -1,67 +1,62 @@
 import os
-from dotenv import load_dotenv
-from elasticsearch import Elasticsearch
-from elasticsearch import exceptions as es_exceptions  # Updated import
+import requests
+from msal import PublicClientApplication
 
 # Load environment variables
-load_dotenv()
+CLIENT_ID = os.getenv("CLIENT_ID")
+TENANT_ID = os.getenv("MS_TENANT_ID")
 
-ES_HOST     = os.getenv("ELASTICSEARCH_URL", "http://localhost:9200")
-ES_USERNAME = os.getenv("ELASTICSEARCH_USERNAME", "elastic")
-ES_PASSWORD = os.getenv("ELASTICSEARCH_PASSWORD", "111111")
-VERIFY_CERTS = False
-INDEX_NAME   = os.getenv("ELASTICSEARCH_INDEX", "test-index")
+AUTHORITY = f"https://login.microsoftonline.com/{TENANT_ID}"
+SCOPES = ["User.Read", "Files.Read"]
 
-es = Elasticsearch(
-    hosts=[ES_HOST],
-    basic_auth=(ES_USERNAME, ES_PASSWORD),
-    verify_certs=VERIFY_CERTS,
-    retry_on_timeout=True,
-    request_timeout=60,
-    max_retries=3
-)
 
-def ensure_index():
-    try:
-        if not es.indices.exists(index=INDEX_NAME):
-            es.indices.create(
-                index=INDEX_NAME,
-                settings={"number_of_shards": 1, "number_of_replicas": 0},
-                mappings={
-                    "properties": {
-                        "filename": {"type": "keyword"},
-                        "content": {"type": "text"}
-                    }
-                }
-            )
-    except es_exceptions.ElasticsearchException as e:
-        print("❌ Failed to create index:", e)
-        raise
+def main():
+    app = PublicClientApplication(CLIENT_ID, authority=AUTHORITY)
 
-def index_document(doc_id, filename, content):
-    ensure_index()
-    try:
-        res = es.index(index=INDEX_NAME, id=doc_id, document={
-            "filename": filename,
-            "content": content
-        })
-        print(f"✅ Document {doc_id} indexed: {res['result']}")
-    except es_exceptions.ElasticsearchException as e:
-        print(f"❌ Failed to index document {doc_id}:", e)
-        raise
+    # Try silent first
+    accounts = app.get_accounts()
+    result = None
+    if accounts:
+        result = app.acquire_token_silent(SCOPES, account=accounts[0])
 
-def search_bm25(query, top_k=5):
-    ensure_index()
-    body = {"query": {"match": {"content": {"query": query}}}}
-    try:
-        res = es.search(index=INDEX_NAME, body=body, size=top_k)
-        hits = res["hits"]["hits"]
-        print(f"🔍 Top {len(hits)} results for '{query}':")
-        for hit in hits:
-            score = hit["_score"]
-            src = hit["_source"]
-            print(f" - [{score:.2f}] {src.get('filename')}: {src.get('content')}")
-        return hits
-    except es_exceptions.ElasticsearchException as e:
-        print("❌ Search failed:", e)
-        raise
+    # Fallback to device code flow if needed
+    if not result:
+        flow = app.initiate_device_flow(scopes=SCOPES)
+        if "user_code" not in flow:
+            print("Failed to create device flow. Check client ID and tenant.")
+            return
+        print(flow["message"])
+        result = app.acquire_token_by_device_flow(flow)
+
+    if "access_token" in result:
+        token = result["access_token"]
+        print("\n✅ Login succeeded! Access token acquired.\n")
+    else:
+        print("❌ Authentication failed:", result.get("error_description"))
+        return
+
+    # Fetch user profile
+    resp = requests.get(
+        "https://graph.microsoft.com/v1.0/me",
+        headers={"Authorization": f"Bearer {token}"}
+    )
+    print("User profile:", resp.json(), "\n")
+
+    # List files in OneDrive root
+    resp = requests.get(
+        "https://graph.microsoft.com/v1.0/me/drive/root/children",
+        headers={"Authorization": f"Bearer {token}"}
+    )
+    if resp.status_code == 200:
+        items = resp.json().get("value", [])
+        print("📄 OneDrive root file list:")
+        for it in items:
+            name = it.get("name")
+            typ = 'Folder' if 'folder' in it else 'File'
+            print(f" - {name} ({typ})")
+    else:
+        print("Failed to list files:", resp.text)
+
+
+if __name__ == "__main__":
+    main()

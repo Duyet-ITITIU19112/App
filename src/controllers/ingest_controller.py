@@ -1,35 +1,43 @@
-from src.services.microsoft_graph import MicrosoftGraphService
-from src.services.parser import parse_file_content
+import time
+from src.services.microsoft_graph import MicrosoftGraphService, OneDriveServiceError
+from src.services.parser import parse_stream
 from src.services.elastic_service import index_document
-from src.models import db
 from src.models.document_model import Document
 
 def ingest_user_onedrive_files(user):
     """
-    Pulls OneDrive files for a user, parses and indexes them.
+    List and ingest .txt/.docx files from a user's OneDrive:
+    - Token refresh handled internally by public methods
+    - Parse file content
+    - Index into Elasticsearch
+    - Store ingestion metadata
     """
-    graph = MicrosoftGraphService(user.access_token)
-    files = graph.list_root_files()
+    svc = MicrosoftGraphService(
+        access_token=user.access_token,
+        refresh_token=user.refresh_token,
+        token_expires=user.token_expires.timestamp() if user.token_expires else 0
+    )
 
-    for f in files:
-        # Skip if already indexed (optional optimization)
-        existing = Document.query.filter_by(filename=f["name"], user_id=user.id).first()
-        if existing:
-            continue
+    try:
+        files = svc.list_root_files()
+    except OneDriveServiceError as e:
+        # Provide helpful logging if needed
+        raise OneDriveServiceError(f"Failed to list root files: {e}")
 
-        file_bytes = graph.fetch_file_content(f["id"])
-        text = parse_file_content(f["name"], file_bytes)
+    for item in files:
+        try:
+            content_bytes = svc.fetch_file_content(item["id"])
+        except OneDriveServiceError as e:
+            raise OneDriveServiceError(f"Failed to fetch file '{item['name']}': {e}")
 
-        # Index into Elasticsearch
-        index_document(user.id, f["name"], text)
+        text = parse_stream(item["name"], content_bytes)
 
-        # Save metadata to DB
-        doc = Document(
-            filename=f["name"],
-            source="onedrive",
-            user_id=user.id,
-            indexed=True
-        )
-        db.session.add(doc)
+        # Optionally store metadata using your Document model
+        try:
+            Document.create_from_onedrive(item, text, user.id)
+        except Exception:
+            # Logging here if needed, but continue indexing
+            pass
 
-    db.session.commit()
+        # Index parsed content into Elasticsearch
+        index_document(user_id=user.id, filename=item["name"], content=text)
