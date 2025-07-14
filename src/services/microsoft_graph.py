@@ -51,12 +51,20 @@ class MicrosoftGraphService:
             )
 
     def _ensure_token(self):
+        """
+        Ensures we have a valid access token. Only checks/refreshes once per instance
+        unless manually reset via ensure_valid_token().
+        """
         if self._token_checked:
+            current_app.logger.debug("🔄 Token already checked, skipping...")
             return
+        
+        current_app.logger.debug("🔍 Checking token validity...")
         self._token_checked = True
 
         now = time.time()
         if not self.access_token or now >= self.token_expires:
+            current_app.logger.debug("🔄 Token expired or missing, refreshing...")
             scopes_all = current_app.config["SCOPE"].split()
             reserved = {"openid", "profile", "offline_access"}
             scopes = [s for s in scopes_all if s not in reserved]
@@ -114,12 +122,19 @@ class MicrosoftGraphService:
         self.headers = {"Authorization": f"Bearer {self.access_token}"}
 
     def ensure_valid_token(self):
+        """
+        Public method to force token validation if it expires within 5 minutes.
+        Resets the _token_checked flag to force a new check.
+        """
+        current_app.logger.debug("🔍 Manually checking token validity...")
         # If token expires within 5 minutes, force a refresh
         if (self.token_expires - time.time()) < 300:
+            current_app.logger.debug("🔄 Token expires soon, forcing refresh...")
             self._token_checked = False
         self._ensure_token()
 
     def get_auth_url(self, state: str) -> str:
+        """Get Microsoft OAuth authorization URL"""
         return self.app.get_authorization_request_url(
             scopes=current_app.config["SCOPE"].split(),
             redirect_uri=current_app.config["REDIRECT_URI"],
@@ -127,6 +142,7 @@ class MicrosoftGraphService:
         )
 
     def acquire_token_by_code(self, code: str) -> dict:
+        """Exchange authorization code for access token"""
         result = self.app.acquire_token_by_authorization_code(
             code,
             scopes=current_app.config["SCOPE"].split(),
@@ -143,35 +159,35 @@ class MicrosoftGraphService:
         return result
 
     def list_root_files(self) -> list:
-        """
-        List files and folders in the drive root.
-        """
+        """List files and folders in the drive root."""
+        current_app.logger.debug("📁 Listing root files...")
         self._ensure_token()
         url = f"{self.BASE_URL}/me/drive/root/children"
         resp = requests.get(url, headers=self.headers)
         if resp.status_code != 200:
+            current_app.logger.error("❌ Failed to list root files: %s", resp.text)
             raise OneDriveServiceError(resp.text)
         return resp.json().get("value", [])
 
     def list_children(self, parent_id: str) -> list:
-        """
-        List direct children of a given folder.
-        """
+        """List direct children of a given folder."""
+        current_app.logger.debug("📁 Listing children for folder: %s", parent_id)
         self._ensure_token()
         url = f"{self.BASE_URL}/me/drive/items/{parent_id}/children"
         resp = requests.get(url, headers=self.headers)
         if resp.status_code != 200:
+            current_app.logger.error("❌ Failed to list children: %s", resp.text)
             raise OneDriveServiceError(resp.text)
         items = resp.json().get("value", [])
         items.sort(key=lambda i: ("file" in i, i.get("name", "").lower()))
         return items
 
     def list_all_files_recursively(self, folder_id=None, _depth=0) -> list:
-        """
-        Recursively list all .docx and .txt files under a folder (or root).
-        """
+        """Recursively list all .docx and .txt files under a folder (or root)."""
         if _depth == 0:
+            current_app.logger.debug("📁 Starting recursive file listing...")
             self._ensure_token()
+        
         base = (
             f"{self.BASE_URL}/me/drive/items/{folder_id}/children"
             if folder_id else
@@ -182,6 +198,7 @@ class MicrosoftGraphService:
         while url:
             resp = requests.get(url, headers=self.headers)
             if resp.status_code != 200:
+                current_app.logger.error("❌ Failed to list files recursively: %s", resp.text)
                 raise OneDriveServiceError(resp.text)
             data = resp.json()
             for item in data.get("value", []):
@@ -202,6 +219,8 @@ class MicrosoftGraphService:
         return all_files
 
     def list_delta(self, delta_link=None) -> tuple:
+        """Get delta changes from OneDrive"""
+        current_app.logger.debug("🔄 Listing delta changes...")
         self._ensure_token()
         url = delta_link or f"{self.BASE_URL}/me/drive/root/delta"
         items = []
@@ -209,6 +228,7 @@ class MicrosoftGraphService:
         while url:
             resp = requests.get(url, headers=self.headers)
             if resp.status_code != 200:
+                current_app.logger.error("❌ Failed to get delta: %s", resp.text)
                 raise OneDriveServiceError(resp.text)
             data = resp.json()
             items.extend(data.get("value", []))
@@ -217,9 +237,8 @@ class MicrosoftGraphService:
         return items, new_delta
 
     def fetch_file_content(self, file_id: str) -> bytes:
-        """
-        Download the raw content of a file as bytes.
-        """
+        """Download the raw content of a file as bytes."""
+        current_app.logger.debug("📥 Fetching file content for: %s", file_id)
         self._ensure_token()
         resp = requests.get(
             f"{self.BASE_URL}/me/drive/items/{file_id}/content",
@@ -227,51 +246,63 @@ class MicrosoftGraphService:
             stream=True
         )
         if resp.status_code != 200:
+            current_app.logger.error("❌ Failed to fetch file content: %s", resp.text)
             raise OneDriveServiceError(resp.text)
         return resp.content
 
     def get_item(self, item_id: str) -> dict:
-
+        """Get metadata for a specific item"""
+        current_app.logger.debug("📋 Getting item metadata: %s", item_id)
         self._ensure_token()
         url = f"{self.BASE_URL}/me/drive/items/{item_id}"
         resp = requests.get(url, headers=self.headers)
         if resp.status_code != 200:
+            current_app.logger.error("❌ Failed to get item: %s", resp.text)
             raise OneDriveServiceError(resp.text)
         return resp.json()
 
     def get_embed_link(self, item_id: str) -> str:
-
+        """Get embed link for a file"""
+        current_app.logger.debug("🔗 Getting embed link for: %s", item_id)
         self._ensure_token()
         url = f"{self.BASE_URL}/me/drive/items/{item_id}/preview"
         resp = requests.post(url, headers=self.headers, json={})
         if resp.status_code != 200:
+            current_app.logger.error("❌ Failed to get embed link: %s", resp.text)
             raise OneDriveServiceError(resp.text)
         return resp.json().get("getUrl")
 
     def get_user_info(self) -> dict:
-
+        """Get current user information"""
+        current_app.logger.debug("👤 Getting user info...")
         self._ensure_token()
         url = f"{self.BASE_URL}/me"
         resp = requests.get(url, headers=self.headers)
         if resp.status_code != 200:
+            current_app.logger.error("❌ Failed to get user info: %s", resp.text)
             raise OneDriveServiceError(resp.text)
         return resp.json()
 
     def upload_file_content(self, item_id: str, content: bytes) -> None:
-
+        """Upload content to replace an existing file"""
+        current_app.logger.debug("📤 Uploading file content for: %s", item_id)
         self._ensure_token()
         url = f"{self.BASE_URL}/me/drive/items/{item_id}/content"
         # PUT to the /content endpoint replaces the file
         resp = requests.put(url, headers=self.headers, data=content)
         if resp.status_code not in (200, 201):
+            current_app.logger.error("❌ Failed to upload file content: %s", resp.text)
             raise OneDriveServiceError(f"Upload failed [{resp.status_code}]: {resp.text}")
 
     def create_edit_link(self, item_id: str) -> str:
+        """Create an edit link for a file"""
+        current_app.logger.debug("✏️ Creating edit link for: %s", item_id)
         self._ensure_token()
         url = f"{self.BASE_URL}/me/drive/items/{item_id}/createLink"
         payload = {"type": "edit", "scope": "anonymous"}
         resp = requests.post(url, headers=self.headers, json=payload)
         if resp.status_code != 200:
+            current_app.logger.error("❌ Failed to create edit link: %s", resp.text)
             raise OneDriveServiceError(f"Create edit link failed: {resp.text}")
         return resp.json()["link"]["webUrl"]
 
@@ -281,7 +312,8 @@ class MicrosoftGraphService:
             content: bytes,
             parent_folder_id: str = None
     ) -> dict:
-
+        """Upload a new file to OneDrive"""
+        current_app.logger.debug("📤 Uploading new file: %s", filename)
         self._ensure_token()
 
         if parent_folder_id:
@@ -298,6 +330,7 @@ class MicrosoftGraphService:
             data=content
         )
         if resp.status_code not in (200, 201):
+            current_app.logger.error("❌ Failed to upload file: %s", resp.text)
             raise OneDriveServiceError(
                 f"Upload failed [{resp.status_code}]: {resp.text}"
             )
@@ -312,9 +345,15 @@ class MicrosoftGraphService:
         client_state: str,
         expiration_datetime: str
     ) -> dict:
-        """
-        Create a Graph change-notification subscription.
-        """
+        """Create a Graph change-notification subscription."""
+        current_app.logger.debug("📡 Creating subscription for resource: %s", resource)
+        current_app.logger.debug("📡 Notification URL: %s", notification_url)
+        current_app.logger.debug("📡 Change type: %s", change_type)
+        current_app.logger.debug("📡 Expiration: %s", expiration_datetime)
+        
+        # Ensure we have a valid token before making the request
+        self._ensure_token()
+        
         url = "https://graph.microsoft.com/v1.0/subscriptions"
         body = {
             "changeType":        change_type,
@@ -323,12 +362,30 @@ class MicrosoftGraphService:
             "clientState":       client_state,
             "expirationDateTime": expiration_datetime
         }
-        headers = {
-            "Authorization": f"Bearer {self.access_token}",
-            "Content-Type":  "application/json"
-        }
-        resp = requests.post(url, json=body, headers=headers)
-        resp.raise_for_status()
+        
+        current_app.logger.debug("📡 Subscription payload: %s", body)
+        
+        # Use the class headers that include the Bearer token
+        resp = requests.post(url, json=body, headers=self.headers)
+        
+        # Add better error handling with detailed logging
+        if resp.status_code == 400:
+            current_app.logger.error(f"❌ Subscription creation failed (400): {resp.text}")
+            current_app.logger.error(f"❌ Request body was: {body}")
+            raise OneDriveServiceError(f"Bad request: {resp.text}")
+        elif resp.status_code == 401:
+            current_app.logger.error("❌ Unauthorized (401) - token may be invalid")
+            current_app.logger.error(f"❌ Current token expires at: {self.token_expires}")
+            current_app.logger.error(f"❌ Current time: {time.time()}")
+            raise OneDriveServiceError("Unauthorized - please re-authenticate")
+        elif resp.status_code == 403:
+            current_app.logger.error("❌ Forbidden (403) - insufficient permissions")
+            raise OneDriveServiceError("Insufficient permissions for subscription")
+        elif resp.status_code != 201:
+            current_app.logger.error(f"❌ Subscription creation failed ({resp.status_code}): {resp.text}")
+            raise OneDriveServiceError(f"Subscription failed [{resp.status_code}]: {resp.text}")
+        
+        current_app.logger.debug("✅ Subscription created successfully")
         return resp.json()
 
     def renew_subscription(
@@ -336,15 +393,77 @@ class MicrosoftGraphService:
         subscription_id: str,
         new_expiration_datetime: str
     ) -> dict:
-        """
-        Extend an existing subscription’s expiration.
-        """
+        """Extend an existing subscription's expiration."""
+        current_app.logger.debug("🔄 Renewing subscription: %s", subscription_id)
+        
+        # Ensure we have a valid token before making the request
+        self._ensure_token()
+        
         url = f"https://graph.microsoft.com/v1.0/subscriptions/{subscription_id}"
         body = {"expirationDateTime": new_expiration_datetime}
-        headers = {
-            "Authorization": f"Bearer {self.access_token}",
-            "Content-Type":  "application/json"
-        }
-        resp = requests.patch(url, json=body, headers=headers)
-        resp.raise_for_status()
+        
+        current_app.logger.debug("🔄 Renewal payload: %s", body)
+        
+        # Use the class headers that include the Bearer token
+        resp = requests.patch(url, json=body, headers=self.headers)
+        
+        # Add better error handling
+        if resp.status_code == 400:
+            current_app.logger.error(f"❌ Subscription renewal failed (400): {resp.text}")
+            raise OneDriveServiceError(f"Bad request: {resp.text}")
+        elif resp.status_code == 404:
+            current_app.logger.error("❌ Subscription not found (404)")
+            raise OneDriveServiceError("Subscription not found")
+        elif resp.status_code == 401:
+            current_app.logger.error("❌ Unauthorized (401) - token may be invalid")
+            raise OneDriveServiceError("Unauthorized - please re-authenticate")
+        elif resp.status_code != 200:
+            current_app.logger.error(f"❌ Subscription renewal failed ({resp.status_code}): {resp.text}")
+            raise OneDriveServiceError(f"Renewal failed [{resp.status_code}]: {resp.text}")
+        
+        current_app.logger.debug("✅ Subscription renewed successfully")
         return resp.json()
+
+    def delete_subscription(self, subscription_id: str) -> bool:
+        """Delete an existing subscription."""
+        current_app.logger.debug("🗑️ Deleting subscription: %s", subscription_id)
+        
+        # Ensure we have a valid token before making the request
+        self._ensure_token()
+        
+        url = f"https://graph.microsoft.com/v1.0/subscriptions/{subscription_id}"
+        resp = requests.delete(url, headers=self.headers)
+        
+        if resp.status_code == 404:
+            current_app.logger.warning("⚠️ Subscription not found (404) - may already be deleted")
+            return True
+        elif resp.status_code == 401:
+            current_app.logger.error("❌ Unauthorized (401) - token may be invalid")
+            raise OneDriveServiceError("Unauthorized - please re-authenticate")
+        elif resp.status_code != 204:
+            current_app.logger.error(f"❌ Subscription deletion failed ({resp.status_code}): {resp.text}")
+            raise OneDriveServiceError(f"Deletion failed [{resp.status_code}]: {resp.text}")
+        
+        current_app.logger.debug("✅ Subscription deleted successfully")
+        return True
+
+    def list_subscriptions(self) -> list:
+        """List all active subscriptions."""
+        current_app.logger.debug("📋 Listing all subscriptions...")
+        
+        # Ensure we have a valid token before making the request
+        self._ensure_token()
+        
+        url = "https://graph.microsoft.com/v1.0/subscriptions"
+        resp = requests.get(url, headers=self.headers)
+        
+        if resp.status_code == 401:
+            current_app.logger.error("❌ Unauthorized (401) - token may be invalid")
+            raise OneDriveServiceError("Unauthorized - please re-authenticate")
+        elif resp.status_code != 200:
+            current_app.logger.error(f"❌ Failed to list subscriptions ({resp.status_code}): {resp.text}")
+            raise OneDriveServiceError(f"List failed [{resp.status_code}]: {resp.text}")
+        
+        subscriptions = resp.json().get("value", [])
+        current_app.logger.debug(f"✅ Found {len(subscriptions)} subscriptions")
+        return subscriptions

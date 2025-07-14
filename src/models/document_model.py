@@ -1,5 +1,7 @@
 from datetime import datetime
 from src.models import db
+import hashlib
+
 
 class Document(db.Model):
     __tablename__ = "documents"
@@ -15,4 +17,8 @@ class Document(db.Model):
     size = db.Column(db.BigInteger)
     web_url = db.Column(db.String(1024))
     user_id = db.Column(db.Integer, db.ForeignKey("users.id"), nullable=False)
+    # In sync_file function, add content_hash calculation
+
+    content_hash = hashlib.sha256(item["id"].encode()).hexdigest()
+    file_data["content_hash"] = content_hash
 

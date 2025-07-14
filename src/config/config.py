@@ -26,12 +26,25 @@ class BaseConfig:
     CLIENT_SECRET = os.getenv("CLIENT_SECRET")
     MS_TENANT_ID = os.getenv("MS_TENANT_ID", "common")
     AUTHORITY = os.getenv("AUTHORITY", f"https://login.microsoftonline.com/{MS_TENANT_ID}")
-    REDIRECT_PATH = "/auth/"  # ensure your Auth blueprint uses this
-    REDIRECT_URI = os.getenv("MS_REDIRECT_URI", f"http://localhost:5000{REDIRECT_PATH}")
+    
+    # Server configuration
+    SERVER_IP = "103.98.161.94"
+    SERVER_PORT = "5555"
+    SERVER_BASE_URL = f"http://{SERVER_IP}:{SERVER_PORT}"
+    
+    # Auth configuration
+    REDIRECT_PATH = "/auth/callback"  # Full callback path
+    REDIRECT_URI = os.getenv("MS_REDIRECT_URI", f"{SERVER_BASE_URL}{REDIRECT_PATH}")
     SCOPE = os.getenv("SCOPE", "openid profile offline_access User.Read Files.ReadWrite.All")
 
-    AUTH_REDIRECT_URI = os.getenv("AUTH_REDIRECT_URI", f"http://localhost:5000{os.getenv('REDIRECT_PATH', '/auth/')}")
-    # Microsoft Graph change-notification webhook endpoint (for /notifications)
-    NOTIFICATIONS_URL = os.getenv("NOTIFICATIONS_URL", "http://localhost:5000/notifications")
+    AUTH_REDIRECT_URI = REDIRECT_URI  # Use same as REDIRECT_URI
+    
+    # Webhook Configuration
+    WEBHOOK_PATH = "/webhook/notifications"
+    WEBHOOK_FULL_URL = f"{SERVER_BASE_URL}{WEBHOOK_PATH}"
+    WEBHOOK_TEST_URL = f"{SERVER_BASE_URL}/webhook/test"
+    
+    # Microsoft Graph notifications (use webhook URL)
+    NOTIFICATIONS_URL = WEBHOOK_FULL_URL
 
 
