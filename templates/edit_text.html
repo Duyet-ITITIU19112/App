@@ -1,0 +1,18 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Edit {{ filename }}</title>
+  <link rel="stylesheet" href="{{ url_for('static', filename='css/onedrive_browser.css') }}">
+</head>
+<body>
+  <h1>Editing {{ filename }}</h1>
+  <form method="post">
+    <textarea name="content" rows="20" style="width:100%;">{{ content }}</textarea>
+    <p>
+      <button type="submit">Save back to OneDrive</button>
+      <a href="{{ url_for('files.browse') }}">Cancel</a>
+    </p>
+  </form>
+</body>
+</html>

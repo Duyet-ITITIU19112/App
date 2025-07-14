@@ -1,0 +1,123 @@
+/* Reset & base */
+* { box-sizing: border-box; margin: 0; padding: 0; }
+body {
+  font-family: "Segoe UI", Tahoma, sans-serif;
+  color: #333;
+  background: #f4f4f4;
+}
+
+/* —————— OneDrive Top Bar —————— */
+.od-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  background: #fff;
+  border-bottom: 1px solid #e1e1e1;
+  height: 56px;
+  padding: 0 24px;
+  box-shadow: 0 1px 3px rgba(0,0,0,0.08);
+  margin-bottom: 16px;
+}
+
+.od-header-left,
+.od-header-right {
+  display: flex;
+  align-items: center;
+}
+
+.od-logo {
+  font-size: 1.25rem;
+  font-weight: bold;
+  color: #0078d4;
+  margin-right: 16px;
+}
+
+.od-btn-primary {
+  background-color: #0078d4;
+  color: #fff;
+  border: none;
+  padding: 8px 14px;
+  border-radius: 4px;
+  font-size: 0.95rem;
+  cursor: pointer;
+  transition: background-color 0.2s ease;
+}
+.od-btn-primary:hover {
+  background-color: #005a9e;
+}
+
+.od-logout-btn {
+  color: #0078d4;
+  text-decoration: none;
+  font-size: 0.93rem;
+  padding: 6px 10px;
+  border-radius: 4px;
+  transition: background-color 0.2s ease;
+}
+.od-logout-btn:hover {
+  background-color: rgba(0, 120, 212, 0.1);
+}
+
+/* —————— Page Title & Search —————— */
+h1 {
+  margin: 0 24px 12px;
+  font-size: 1.5rem;
+}
+
+.search-form {
+  display: flex;
+  align-items: center;
+  margin: 0 24px 24px;
+}
+.search-form input {
+  flex: 1;
+  padding: 8px 12px;
+  border: 1px solid #ccc;
+  border-radius: 4px;
+}
+.search-form button {
+  margin-left: 8px;
+  padding: 8px 14px;
+  border: 1px solid #ccc;
+  background: #fff;
+  border-radius: 4px;
+  cursor: pointer;
+}
+.back-link {
+  margin-left: 16px;
+  color: #0078d4;
+  text-decoration: none;
+}
+
+/* —————— File List —————— */
+.file-list {
+  list-style: none;
+  margin: 0 24px 32px;
+  padding: 0;
+}
+.file-list li {
+  padding: 8px 0;
+  border-bottom: 1px solid #e1e1e1;
+  display: flex;
+  align-items: center;
+  font-size: 0.95rem;
+}
+.file-list li.folder a,
+.file-list li.file a {
+  margin-left: 8px;
+  color: #0078d4;
+  text-decoration: none;
+}
+.file-list li.folder a:hover,
+.file-list li.file a:hover {
+  text-decoration: underline;
+}
+.snippet {
+  margin-left: 24px;
+  font-size: 0.9rem;
+  color: #555;
+}
+.empty {
+  color: #666;
+  font-style: italic;
+}

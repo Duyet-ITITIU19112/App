@@ -1,0 +1,97 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Your OneDrive</title>
+  <link rel="stylesheet" href="{{ url_for('static', filename='css/onedrive_browser.css') }}">
+</head>
+<body>
+
+  <!-- ====================================== -->
+  <!-- OneDrive-inspired top bar -->
+  <!-- ====================================== -->
+  <header class="od-header">
+    <div class="od-header-left">
+      <span class="od-logo">OneDrive</span>
+      <form action="{{ url_for('files.browse', folder_id=folder_id) }}"
+            method="post"
+            enctype="multipart/form-data"
+            class="inline-upload-form"
+            style="display:inline; margin-left:1rem;">
+        <input type="hidden" name="folder_id" value="{{ folder_id or '' }}">
+        <label class="od-btn-primary" style="cursor:pointer;">
+          + Create or upload
+          <input id="file-input"
+                 type="file"
+                 name="file"
+                 style="display:none"
+                 onchange="this.form.submit()">
+        </label>
+      </form>
+    </div>
+    <div class="od-header-right">
+      <a href="{{ url_for('auth.logout') }}" class="od-logout-btn">Logout</a>
+    </div>
+  </header>
+
+  <!-- ====================================== -->
+  <!-- Page title & Search remain below -->
+  <!-- ====================================== -->
+  <h1>Your OneDrive Files</h1>
+
+  <!-- 🔍 Search Form -->
+  <form action="{{ url_for('files.browse') }}" method="get" class="search-form">
+    <input
+      type="text"
+      name="q"
+      placeholder="🔍 Search your files..."
+      value="{{ search_query or '' }}"
+    >
+    <button type="submit">Search</button>
+    {% if folder_id %}
+      <input type="hidden" name="folder_id" value="{{ folder_id }}">
+      <a href="{{ url_for('files.browse') }}" class="back-link">🔙 Go Back</a>
+    {% endif %}
+  </form>
+
+  <!-- Flash messages -->
+  {% with messages = get_flashed_messages(with_categories=true) %}
+    {% if messages %}
+      <ul class="flashes">
+        {% for category, msg in messages %}
+          <li class="flash {{ category }}">{{ msg }}</li>
+        {% endfor %}
+      </ul>
+    {% endif %}
+  {% endwith %}
+
+  <!-- 📁 File and Folder List -->
+  <ul class="file-list">
+    {% for it in items %}
+      <li class="{{ 'folder' if it.get('folder') else 'file' }}">
+        {% if it.get('folder') %}
+          <div class="folder-item">
+            📁 <a href="{{ url_for('files.browse', folder_id=it.id) }}" class="item-title-large">{{ it.name }}</a>
+          </div>
+        {% else %}
+          <div class="file-item">
+            <span class="item-icon">📄</span>
+            <a href="{{ url_for('files.preview_file', item_id=it.id) }}" class="item-title-large" target="_blank">
+              {{ it.filename or it.name }}
+            </a>
+            {% if it.snippet %}
+              <div class="item-snippet">{{ it.snippet | safe }}</div>
+            {% endif %}
+          </div>
+        {% endif %}
+      </li>
+    {% else %}
+      <li class="empty">
+        {{ search_query and 'No results found.' or 'No files or folders found.' }}
+      </li>
+    {% endfor %}
+  </ul>
+
+  <script src="{{ url_for('static', filename='js/preview.js') }}"></script>
+</body>
+</html>

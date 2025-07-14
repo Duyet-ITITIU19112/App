@@ -1,0 +1,596 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project version="4">
+  <component name="AutoImportSettings">
+    <option name="autoReloadType" value="SELECTIVE" />
+  </component>
+  <component name="ChangeListManager">
+    <list default="true" id="c457582c-3f14-44e1-a2aa-b358e5473bfa" name="Changes" comment="e">
+      <change afterPath="$PROJECT_DIR$/.env" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/.gitattributes" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/.gitignore" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/.idea/.name" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/.idea/App.iml" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/.idea/inspectionProfiles/Project_Default.xml" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/.idea/inspectionProfiles/profiles_settings.xml" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/.idea/misc.xml" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/.idea/vcs.xml" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/.vscode/settings.json" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/DockerFile" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/README.md" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/app.py" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/flask_session/2029240f6d1128be89ddc32729463129" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/flask_session/31b8d75c39fbd816f278570bf61a2852" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/flask_session/613237e42745f33e613e3b4737f89a42" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/flask_session/eaa5f4ba1106344d102daa05dc17011a" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/flask_session/f053db3796624ce1a47f3beb4cf0588f" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/init_setup.py" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/init_setup.sh" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/requirements.txt" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/__init__.py" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/cli/commands.py" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/config/__init__.py" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/config/config.py" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/config/dev_config.py" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/config/production.py" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/config/search_config.py" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/controllers/__init__.py" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/controllers/auth_controller.py" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/controllers/ingest_controller.py" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/controllers/login_controller.py" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/controllers/search_controller.py" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/encoder/nltk/corpora/stopwords.zip" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/encoder/nltk/corpora/stopwords/README" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/encoder/nltk/corpora/stopwords/albanian" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/encoder/nltk/corpora/stopwords/arabic" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/encoder/nltk/corpora/stopwords/azerbaijani" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/encoder/nltk/corpora/stopwords/basque" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/encoder/nltk/corpora/stopwords/belarusian" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/encoder/nltk/corpora/stopwords/bengali" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/encoder/nltk/corpora/stopwords/catalan" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/encoder/nltk/corpora/stopwords/chinese" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/encoder/nltk/corpora/stopwords/danish" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/encoder/nltk/corpora/stopwords/dutch" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/encoder/nltk/corpora/stopwords/english" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/encoder/nltk/corpora/stopwords/finnish" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/encoder/nltk/corpora/stopwords/french" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/encoder/nltk/corpora/stopwords/german" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/encoder/nltk/corpora/stopwords/greek" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/encoder/nltk/corpora/stopwords/hebrew" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/encoder/nltk/corpora/stopwords/hinglish" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/encoder/nltk/corpora/stopwords/hungarian" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/encoder/nltk/corpora/stopwords/indonesian" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/encoder/nltk/corpora/stopwords/italian" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/encoder/nltk/corpora/stopwords/kazakh" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/encoder/nltk/corpora/stopwords/nepali" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/encoder/nltk/corpora/stopwords/norwegian" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/encoder/nltk/corpora/stopwords/portuguese" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/encoder/nltk/corpora/stopwords/romanian" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/encoder/nltk/corpora/stopwords/russian" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/encoder/nltk/corpora/stopwords/slovene" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/encoder/nltk/corpora/stopwords/spanish" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/encoder/nltk/corpora/stopwords/swedish" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/encoder/nltk/corpora/stopwords/tajik" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/encoder/nltk/corpora/stopwords/tamil" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/encoder/nltk/corpora/stopwords/turkish" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/encoder/nltk/corpora/wordnet.zip" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/encoder/nltk/tokenizers/punkt.zip" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/encoder/nltk/tokenizers/punkt/PY3/README" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/encoder/nltk/tokenizers/punkt/PY3/czech.pickle" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/encoder/nltk/tokenizers/punkt/PY3/danish.pickle" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/encoder/nltk/tokenizers/punkt/PY3/dutch.pickle" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/encoder/nltk/tokenizers/punkt/PY3/english.pickle" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/encoder/nltk/tokenizers/punkt/PY3/estonian.pickle" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/encoder/nltk/tokenizers/punkt/PY3/finnish.pickle" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/encoder/nltk/tokenizers/punkt/PY3/french.pickle" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/encoder/nltk/tokenizers/punkt/PY3/german.pickle" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/encoder/nltk/tokenizers/punkt/PY3/greek.pickle" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/encoder/nltk/tokenizers/punkt/PY3/italian.pickle" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/encoder/nltk/tokenizers/punkt/PY3/malayalam.pickle" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/encoder/nltk/tokenizers/punkt/PY3/norwegian.pickle" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/encoder/nltk/tokenizers/punkt/PY3/polish.pickle" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/encoder/nltk/tokenizers/punkt/PY3/portuguese.pickle" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/encoder/nltk/tokenizers/punkt/PY3/russian.pickle" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/encoder/nltk/tokenizers/punkt/PY3/slovene.pickle" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/encoder/nltk/tokenizers/punkt/PY3/spanish.pickle" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/encoder/nltk/tokenizers/punkt/PY3/swedish.pickle" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/encoder/nltk/tokenizers/punkt/PY3/turkish.pickle" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/encoder/nltk/tokenizers/punkt/README" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/encoder/nltk/tokenizers/punkt/czech.pickle" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/encoder/nltk/tokenizers/punkt/danish.pickle" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/encoder/nltk/tokenizers/punkt/dutch.pickle" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/encoder/nltk/tokenizers/punkt/english.pickle" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/encoder/nltk/tokenizers/punkt/estonian.pickle" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/encoder/nltk/tokenizers/punkt/finnish.pickle" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/encoder/nltk/tokenizers/punkt/french.pickle" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/encoder/nltk/tokenizers/punkt/german.pickle" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/encoder/nltk/tokenizers/punkt/greek.pickle" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/encoder/nltk/tokenizers/punkt/italian.pickle" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/encoder/nltk/tokenizers/punkt/malayalam.pickle" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/encoder/nltk/tokenizers/punkt/norwegian.pickle" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/encoder/nltk/tokenizers/punkt/polish.pickle" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/encoder/nltk/tokenizers/punkt/portuguese.pickle" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/encoder/nltk/tokenizers/punkt/russian.pickle" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/encoder/nltk/tokenizers/punkt/slovene.pickle" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/encoder/nltk/tokenizers/punkt/spanish.pickle" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/encoder/nltk/tokenizers/punkt/swedish.pickle" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/encoder/nltk/tokenizers/punkt/turkish.pickle" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/encoder/setup.py" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/encoder/spacy/en_core_web_sm/__init__.py" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/encoder/spacy/en_core_web_sm/en_core_web_sm-3.7.1/LICENSE" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/encoder/spacy/en_core_web_sm/en_core_web_sm-3.7.1/LICENSES_SOURCES" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/encoder/spacy/en_core_web_sm/en_core_web_sm-3.7.1/README.md" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/encoder/spacy/en_core_web_sm/en_core_web_sm-3.7.1/accuracy.json" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/encoder/spacy/en_core_web_sm/en_core_web_sm-3.7.1/attribute_ruler/patterns" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/encoder/spacy/en_core_web_sm/en_core_web_sm-3.7.1/config.cfg" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/encoder/spacy/en_core_web_sm/en_core_web_sm-3.7.1/lemmatizer/lookups/lookups.bin" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/encoder/spacy/en_core_web_sm/en_core_web_sm-3.7.1/meta.json" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/encoder/spacy/en_core_web_sm/en_core_web_sm-3.7.1/ner/cfg" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/encoder/spacy/en_core_web_sm/en_core_web_sm-3.7.1/ner/model" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/encoder/spacy/en_core_web_sm/en_core_web_sm-3.7.1/ner/moves" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/encoder/spacy/en_core_web_sm/en_core_web_sm-3.7.1/parser/cfg" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/encoder/spacy/en_core_web_sm/en_core_web_sm-3.7.1/parser/model" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/encoder/spacy/en_core_web_sm/en_core_web_sm-3.7.1/parser/moves" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/encoder/spacy/en_core_web_sm/en_core_web_sm-3.7.1/senter/cfg" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/encoder/spacy/en_core_web_sm/en_core_web_sm-3.7.1/senter/model" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/encoder/spacy/en_core_web_sm/en_core_web_sm-3.7.1/tagger/cfg" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/encoder/spacy/en_core_web_sm/en_core_web_sm-3.7.1/tagger/model" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/encoder/spacy/en_core_web_sm/en_core_web_sm-3.7.1/tok2vec/cfg" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/encoder/spacy/en_core_web_sm/en_core_web_sm-3.7.1/tok2vec/model" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/encoder/spacy/en_core_web_sm/en_core_web_sm-3.7.1/tokenizer" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/encoder/spacy/en_core_web_sm/en_core_web_sm-3.7.1/vocab/key2row" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/encoder/spacy/en_core_web_sm/en_core_web_sm-3.7.1/vocab/lookups.bin" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/encoder/spacy/en_core_web_sm/en_core_web_sm-3.7.1/vocab/strings.json" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/encoder/spacy/en_core_web_sm/en_core_web_sm-3.7.1/vocab/vectors" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/encoder/spacy/en_core_web_sm/en_core_web_sm-3.7.1/vocab/vectors.cfg" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/encoder/spacy/en_core_web_sm/meta.json" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/models/__init__.py" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/models/document_model.py" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/models/query_model.py" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/models/result_model.py" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/models/subscription_model.py" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/models/user_model.py" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/routes.py" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/routes/__init__.py" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/routes/auth.py" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/routes/files.py" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/routes/main.py" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/routes/notifications.py" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/routes/search.py" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/routes/sync.py" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/services/__init__.py" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/services/crossencoder_service.py" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/services/elastic_service.py" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/services/embedding_service.py" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/services/expansion_service.py" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/services/jwt_service.py" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/services/microsoft_graph.py" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/services/onedrive_service.py" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/services/parser.py" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/services/test.py" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/services/text_preprocessing.py" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/tasks/ingest_tasks.py" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/tasks/search_tasks.py" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/utils.py" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/utils/__init__.py" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/utils/async_utils.py" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/utils/auth_utils.py" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/static/css/login.css" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/static/css/onedrive_browser.css" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/static/css/preview.css" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/static/css/style.css" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/static/js/onedrive_browser.js" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/static/js/preview.js" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/static/js/search.js" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/template.py" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/templates/dashboard.html" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/templates/edit_text.html" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/templates/index.html" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/templates/onedrive_browser.html" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/templates/onedrive_picker.html" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/templates/preview.html" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/test.py" afterDir="false" />
+    </list>
+    <option name="SHOW_DIALOG" value="false" />
+    <option name="HIGHLIGHT_CONFLICTS" value="true" />
+    <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
+    <option name="LAST_RESOLUTION" value="IGNORE" />
+  </component>
+  <component name="FileTemplateManagerImpl">
+    <option name="RECENT_TEMPLATES">
+      <list>
+        <option value="Python Script" />
+      </list>
+    </option>
+  </component>
+  <component name="Git.Settings">
+    <option name="RECENT_BRANCH_BY_REPOSITORY">
+      <map>
+        <entry key="$PROJECT_DIR$" value="main" />
+      </map>
+    </option>
+    <option name="RECENT_GIT_ROOT_PATH" value="$PROJECT_DIR$" />
+    <option name="ROOT_SYNC" value="SYNC" />
+  </component>
+  <component name="MarkdownSettingsMigration">
+    <option name="stateVersion" value="1" />
+  </component>
+  <component name="ProblemsViewState">
+    <option name="selectedTabId" value="CurrentFile" />
+  </component>
+  <component name="ProjectColorInfo">{
+  &quot;associatedIndex&quot;: 1
+}</component>
+  <component name="ProjectId" id="2yVLCjiqbeFC0OFkiGrdA3NowZV" />
+  <component name="ProjectLevelVcsManager">
+    <ConfirmationsSetting value="2" id="Add" />
+  </component>
+  <component name="ProjectViewState">
+    <option name="hideEmptyMiddlePackages" value="true" />
+    <option name="showLibraryContents" value="true" />
+  </component>
+  <component name="PropertiesComponent"><![CDATA[{
+  "keyToString": {
+    "ASKED_ADD_EXTERNAL_FILES": "true",
+    "Python.Run Flask .executor": "Run",
+    "Python.__init__ (1).executor": "Run",
+    "Python.__init__.executor": "Run",
+    "Python.app.executor": "Run",
+    "Python.auth.executor": "Run",
+    "Python.dev_config.executor": "Run",
+    "Python.elastic_service.executor": "Run",
+    "Python.search_config.executor": "Run",
+    "Python.setup.executor": "Run",
+    "Python.test (1).executor": "Run",
+    "Python.test.executor": "Run",
+    "RunOnceActivity.OpenProjectViewOnStart": "true",
+    "RunOnceActivity.ShowReadmeOnStart": "true",
+    "git-widget-placeholder": "main",
+    "ignore.virus.scanning.warn.message": "true",
+    "last_opened_file_path": "D:/Thesis/App",
+    "settings.editor.selected.configurable": "com.jetbrains.python.configuration.PyActiveSdkModuleConfigurable"
+  }
+}]]></component>
+  <component name="RecentsManager">
+    <key name="MoveFile.RECENT_KEYS">
+      <recent name="D:\Thesis\App\src\utils" />
+    </key>
+  </component>
+  <component name="RunManager" selected="Python.app">
+    <configuration name="__init__ (1)" type="PythonConfigurationType" factoryName="Python" temporary="true" nameIsGenerated="true">
+      <module name="App" />
+      <option name="ENV_FILES" value="" />
+      <option name="INTERPRETER_OPTIONS" value="" />
+      <option name="PARENT_ENVS" value="true" />
+      <envs>
+        <env name="PYTHONUNBUFFERED" value="1" />
+      </envs>
+      <option name="SDK_HOME" value="" />
+      <option name="SDK_NAME" value="Python 3.9" />
+      <option name="WORKING_DIRECTORY" value="$PROJECT_DIR$/src/services" />
+      <option name="IS_MODULE_SDK" value="true" />
+      <option name="ADD_CONTENT_ROOTS" value="true" />
+      <option name="ADD_SOURCE_ROOTS" value="true" />
+      <option name="SCRIPT_NAME" value="$PROJECT_DIR$/src/services/__init__.py" />
+      <option name="PARAMETERS" value="" />
+      <option name="SHOW_COMMAND_LINE" value="false" />
+      <option name="EMULATE_TERMINAL" value="false" />
+      <option name="MODULE_MODE" value="false" />
+      <option name="REDIRECT_INPUT" value="false" />
+      <option name="INPUT_FILE" value="" />
+      <method v="2" />
+    </configuration>
+    <configuration name="__init__" type="PythonConfigurationType" factoryName="Python" temporary="true" nameIsGenerated="true">
+      <module name="App" />
+      <option name="ENV_FILES" value="" />
+      <option name="INTERPRETER_OPTIONS" value="" />
+      <option name="PARENT_ENVS" value="true" />
+      <envs>
+        <env name="PYTHONUNBUFFERED" value="1" />
+        <env name="TEMP" value="D:\Temp" />
+        <env name="TMP" value="D:\Temp" />
+      </envs>
+      <option name="SDK_HOME" value="" />
+      <option name="WORKING_DIRECTORY" value="$PROJECT_DIR$/src/routes" />
+      <option name="IS_MODULE_SDK" value="true" />
+      <option name="ADD_CONTENT_ROOTS" value="true" />
+      <option name="ADD_SOURCE_ROOTS" value="true" />
+      <option name="SCRIPT_NAME" value="$PROJECT_DIR$/src/routes/__init__.py" />
+      <option name="PARAMETERS" value="" />
+      <option name="SHOW_COMMAND_LINE" value="false" />
+      <option name="EMULATE_TERMINAL" value="false" />
+      <option name="MODULE_MODE" value="false" />
+      <option name="REDIRECT_INPUT" value="false" />
+      <option name="INPUT_FILE" value="" />
+      <method v="2" />
+    </configuration>
+    <configuration default="true" type="PythonConfigurationType" factoryName="Python">
+      <module name="App" />
+      <option name="ENV_FILES" value="" />
+      <option name="INTERPRETER_OPTIONS" value="" />
+      <option name="PARENT_ENVS" value="true" />
+      <envs>
+        <env name="PYTHONUNBUFFERED" value="1" />
+      </envs>
+      <option name="SDK_HOME" value="" />
+      <option name="SDK_NAME" value="Python 3.9" />
+      <option name="WORKING_DIRECTORY" value="" />
+      <option name="IS_MODULE_SDK" value="false" />
+      <option name="ADD_CONTENT_ROOTS" value="true" />
+      <option name="ADD_SOURCE_ROOTS" value="true" />
+      <option name="SCRIPT_NAME" value="" />
+      <option name="PARAMETERS" value="" />
+      <option name="SHOW_COMMAND_LINE" value="false" />
+      <option name="EMULATE_TERMINAL" value="false" />
+      <option name="MODULE_MODE" value="false" />
+      <option name="REDIRECT_INPUT" value="false" />
+      <option name="INPUT_FILE" value="" />
+      <method v="2" />
+    </configuration>
+    <configuration name="app" type="PythonConfigurationType" factoryName="Python" nameIsGenerated="true">
+      <module name="App" />
+      <option name="ENV_FILES" value="" />
+      <option name="INTERPRETER_OPTIONS" value="" />
+      <option name="PARENT_ENVS" value="true" />
+      <envs>
+        <env name="PYTHONUNBUFFERED" value="1" />
+        <env name="TEMP" value="$PROJECT_DIR$/../../Temp" />
+        <env name="TMP" value="$PROJECT_DIR$/../../Temp " />
+      </envs>
+      <option name="SDK_HOME" value="" />
+      <option name="WORKING_DIRECTORY" value="$PROJECT_DIR$" />
+      <option name="IS_MODULE_SDK" value="true" />
+      <option name="ADD_CONTENT_ROOTS" value="true" />
+      <option name="ADD_SOURCE_ROOTS" value="true" />
+      <option name="SCRIPT_NAME" value="$PROJECT_DIR$/app.py" />
+      <option name="PARAMETERS" value="" />
+      <option name="SHOW_COMMAND_LINE" value="false" />
+      <option name="EMULATE_TERMINAL" value="false" />
+      <option name="MODULE_MODE" value="false" />
+      <option name="REDIRECT_INPUT" value="false" />
+      <option name="INPUT_FILE" value="" />
+      <method v="2" />
+    </configuration>
+    <configuration name="setup" type="PythonConfigurationType" factoryName="Python" temporary="true" nameIsGenerated="true">
+      <module name="App" />
+      <option name="ENV_FILES" value="" />
+      <option name="INTERPRETER_OPTIONS" value="" />
+      <option name="PARENT_ENVS" value="true" />
+      <envs>
+        <env name="PYTHONUNBUFFERED" value="1" />
+      </envs>
+      <option name="SDK_HOME" value="" />
+      <option name="SDK_NAME" value="Python 3.9" />
+      <option name="WORKING_DIRECTORY" value="$PROJECT_DIR$/src/encoder" />
+      <option name="IS_MODULE_SDK" value="true" />
+      <option name="ADD_CONTENT_ROOTS" value="true" />
+      <option name="ADD_SOURCE_ROOTS" value="true" />
+      <option name="SCRIPT_NAME" value="$PROJECT_DIR$/src/encoder/setup.py" />
+      <option name="PARAMETERS" value="" />
+      <option name="SHOW_COMMAND_LINE" value="false" />
+      <option name="EMULATE_TERMINAL" value="false" />
+      <option name="MODULE_MODE" value="false" />
+      <option name="REDIRECT_INPUT" value="false" />
+      <option name="INPUT_FILE" value="" />
+      <method v="2" />
+    </configuration>
+    <configuration name="test (1)" type="PythonConfigurationType" factoryName="Python" temporary="true" nameIsGenerated="true">
+      <module name="App" />
+      <option name="ENV_FILES" value="" />
+      <option name="INTERPRETER_OPTIONS" value="" />
+      <option name="PARENT_ENVS" value="true" />
+      <envs>
+        <env name="PYTHONUNBUFFERED" value="1" />
+      </envs>
+      <option name="SDK_HOME" value="" />
+      <option name="SDK_NAME" value="Python 3.9" />
+      <option name="WORKING_DIRECTORY" value="$PROJECT_DIR$/src/services" />
+      <option name="IS_MODULE_SDK" value="true" />
+      <option name="ADD_CONTENT_ROOTS" value="true" />
+      <option name="ADD_SOURCE_ROOTS" value="true" />
+      <option name="SCRIPT_NAME" value="$PROJECT_DIR$/src/services/test.py" />
+      <option name="PARAMETERS" value="" />
+      <option name="SHOW_COMMAND_LINE" value="false" />
+      <option name="EMULATE_TERMINAL" value="false" />
+      <option name="MODULE_MODE" value="false" />
+      <option name="REDIRECT_INPUT" value="false" />
+      <option name="INPUT_FILE" value="" />
+      <method v="2" />
+    </configuration>
+    <configuration name="test" type="PythonConfigurationType" factoryName="Python" temporary="true" nameIsGenerated="true">
+      <module name="App" />
+      <option name="ENV_FILES" value="" />
+      <option name="INTERPRETER_OPTIONS" value="" />
+      <option name="PARENT_ENVS" value="true" />
+      <envs>
+        <env name="PYTHONUNBUFFERED" value="1" />
+      </envs>
+      <option name="SDK_HOME" value="" />
+      <option name="SDK_NAME" value="Python 3.9" />
+      <option name="WORKING_DIRECTORY" value="$PROJECT_DIR$" />
+      <option name="IS_MODULE_SDK" value="true" />
+      <option name="ADD_CONTENT_ROOTS" value="true" />
+      <option name="ADD_SOURCE_ROOTS" value="true" />
+      <option name="SCRIPT_NAME" value="$PROJECT_DIR$/test.py" />
+      <option name="PARAMETERS" value="" />
+      <option name="SHOW_COMMAND_LINE" value="false" />
+      <option name="EMULATE_TERMINAL" value="false" />
+      <option name="MODULE_MODE" value="false" />
+      <option name="REDIRECT_INPUT" value="false" />
+      <option name="INPUT_FILE" value="" />
+      <method v="2" />
+    </configuration>
+    <list>
+      <item itemvalue="Python.app" />
+      <item itemvalue="Python.__init__ (1)" />
+      <item itemvalue="Python.setup" />
+      <item itemvalue="Python.__init__" />
+      <item itemvalue="Python.test (1)" />
+      <item itemvalue="Python.test" />
+    </list>
+    <recent_temporary>
+      <list>
+        <item itemvalue="Python.__init__ (1)" />
+        <item itemvalue="Python.test" />
+        <item itemvalue="Python.setup" />
+        <item itemvalue="Python.__init__" />
+        <item itemvalue="Python.test (1)" />
+      </list>
+    </recent_temporary>
+  </component>
+  <component name="SharedIndexes">
+    <attachedChunks>
+      <set>
+        <option value="bundled-python-sdk-d68999036c7f-d3b881c8e49f-com.jetbrains.pycharm.community.sharedIndexes.bundled-PC-233.14475.56" />
+      </set>
+    </attachedChunks>
+  </component>
+  <component name="SpellCheckerSettings" RuntimeDictionaries="0" Folders="0" CustomDictionaries="0" DefaultDictionary="application-level" UseSingleDictionary="true" transferred="true" />
+  <component name="TaskManager">
+    <task active="true" id="Default" summary="Default task">
+      <changelist id="c457582c-3f14-44e1-a2aa-b358e5473bfa" name="Changes" comment="" />
+      <created>1749914668957</created>
+      <option name="number" value="Default" />
+      <option name="presentableId" value="Default" />
+      <updated>1749914668957</updated>
+    </task>
+    <task id="LOCAL-00001" summary="a">
+      <option name="closed" value="true" />
+      <created>1749919359316</created>
+      <option name="number" value="00001" />
+      <option name="presentableId" value="LOCAL-00001" />
+      <option name="project" value="LOCAL" />
+      <updated>1749919359316</updated>
+    </task>
+    <task id="LOCAL-00002" summary="r">
+      <option name="closed" value="true" />
+      <created>1749920579603</created>
+      <option name="number" value="00002" />
+      <option name="presentableId" value="LOCAL-00002" />
+      <option name="project" value="LOCAL" />
+      <updated>1749920579603</updated>
+    </task>
+    <task id="LOCAL-00003" summary="r">
+      <option name="closed" value="true" />
+      <created>1749971562713</created>
+      <option name="number" value="00003" />
+      <option name="presentableId" value="LOCAL-00003" />
+      <option name="project" value="LOCAL" />
+      <updated>1749971562713</updated>
+    </task>
+    <task id="LOCAL-00004" summary="ori">
+      <option name="closed" value="true" />
+      <created>1749972926785</created>
+      <option name="number" value="00004" />
+      <option name="presentableId" value="LOCAL-00004" />
+      <option name="project" value="LOCAL" />
+      <updated>1749972926785</updated>
+    </task>
+    <task id="LOCAL-00005" summary="ori">
+      <option name="closed" value="true" />
+      <created>1750041766159</created>
+      <option name="number" value="00005" />
+      <option name="presentableId" value="LOCAL-00005" />
+      <option name="project" value="LOCAL" />
+      <updated>1750041766159</updated>
+    </task>
+    <task id="LOCAL-00006" summary="e">
+      <option name="closed" value="true" />
+      <created>1750080128285</created>
+      <option name="number" value="00006" />
+      <option name="presentableId" value="LOCAL-00006" />
+      <option name="project" value="LOCAL" />
+      <updated>1750080128285</updated>
+    </task>
+    <task id="LOCAL-00007" summary="e">
+      <option name="closed" value="true" />
+      <created>1750084464509</created>
+      <option name="number" value="00007" />
+      <option name="presentableId" value="LOCAL-00007" />
+      <option name="project" value="LOCAL" />
+      <updated>1750084464509</updated>
+    </task>
+    <task id="LOCAL-00008" summary="e">
+      <option name="closed" value="true" />
+      <created>1750084558370</created>
+      <option name="number" value="00008" />
+      <option name="presentableId" value="LOCAL-00008" />
+      <option name="project" value="LOCAL" />
+      <updated>1750084558370</updated>
+    </task>
+    <task id="LOCAL-00009" summary="e">
+      <option name="closed" value="true" />
+      <created>1750090811163</created>
+      <option name="number" value="00009" />
+      <option name="presentableId" value="LOCAL-00009" />
+      <option name="project" value="LOCAL" />
+      <updated>1750090811163</updated>
+    </task>
+    <option name="localTasksCounter" value="10" />
+    <servers />
+  </component>
+  <component name="UnknownFeatures">
+    <option featureType="com.intellij.fileTypeFactory" implementationName=".env" />
+  </component>
+  <component name="Vcs.Log.Tabs.Properties">
+    <option name="OPEN_GENERIC_TABS">
+      <map>
+        <entry key="43d81723-e6b7-470f-b856-a573f56ae286" value="TOOL_WINDOW" />
+      </map>
+    </option>
+    <option name="TAB_STATES">
+      <map>
+        <entry key="43d81723-e6b7-470f-b856-a573f56ae286">
+          <value>
+            <State>
+              <option name="FILTERS">
+                <map>
+                  <entry key="branch">
+                    <value>
+                      <list>
+                        <option value="HEAD" />
+                      </list>
+                    </value>
+                  </entry>
+                  <entry key="roots">
+                    <value>
+                      <list>
+                        <option value="$PROJECT_DIR$" />
+                      </list>
+                    </value>
+                  </entry>
+                </map>
+              </option>
+              <option name="SHOW_ONLY_AFFECTED_CHANGES" value="true" />
+            </State>
+          </value>
+        </entry>
+        <entry key="MAIN">
+          <value>
+            <State>
+              <option name="FILTERS">
+                <map>
+                  <entry key="branch">
+                    <value>
+                      <list>
+                        <option value="ori" />
+                      </list>
+                    </value>
+                  </entry>
+                </map>
+              </option>
+            </State>
+          </value>
+        </entry>
+      </map>
+    </option>
+  </component>
+  <component name="VcsManagerConfiguration">
+    <option name="ADD_EXTERNAL_FILES_SILENTLY" value="true" />
+    <MESSAGE value="a" />
+    <MESSAGE value="r" />
+    <MESSAGE value="ori" />
+    <MESSAGE value="e" />
+    <option name="LAST_COMMIT_MESSAGE" value="e" />
+  </component>
+</project>

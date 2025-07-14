@@ -1,0 +1,19 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Login with OneDrive</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/login.css') }}">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600&display=swap" rel="stylesheet">
+</head>
+<body>
+    <div class="login-wrapper">
+        <div class="card">
+            <div class="logo-circle">☁</div>
+            <h1>Welcome to OneDrive Integration</h1>
+            <p>Securely access and manage your files in the cloud.</p>
+            <a href="{{ url_for('auth.login') }}" class="btn">Login with OneDrive</a>
+        </div>
+    </div>
+</body>
+</html>

@@ -1,0 +1,82 @@
+body {
+    margin: 0;
+    font-family: 'Inter', sans-serif;
+    height: 100vh;
+    position: relative;
+    overflow: hidden;
+}
+
+body::before {
+    content: "";
+    position: absolute;
+    inset: 0;
+    background: linear-gradient(135deg, rgba(30,60,114,0.9), rgba(42,82,152,0.9));
+    z-index: 0;
+}
+
+.login-wrapper {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 100%;
+    position: relative;
+    z-index: 1;
+}
+
+.card {
+    background-color: #ffffff;
+    border-radius: 12px;
+    padding: 40px 32px;
+    max-width: 400px;
+    width: 100%;
+    text-align: center;
+    box-shadow: 0 12px 32px rgba(0, 0, 0, 0.3);
+    animation: fadeIn 0.8s ease-in-out;
+}
+
+.logo-circle {
+    font-size: 48px;
+    background-color: #0078D4;
+    color: white;
+    width: 80px;
+    height: 80px;
+    line-height: 80px;
+    border-radius: 50%;
+    margin: 0 auto 20px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    font-weight: bold;
+}
+
+h1 {
+    font-size: 1.8rem;
+    color: #1e3c72;
+    margin-bottom: 12px;
+}
+
+p {
+    font-size: 1rem;
+    color: #555;
+    margin-bottom: 28px;
+}
+
+.btn {
+    display: inline-block;
+    background-color: #0078D4;
+    color: white;
+    text-decoration: none;
+    padding: 12px 24px;
+    font-size: 1rem;
+    border-radius: 8px;
+    transition: background-color 0.3s ease;
+}
+
+.btn:hover {
+    background-color: #005a9e;
+}
+
+@keyframes fadeIn {
+    from { opacity: 0; transform: translateY(20px); }
+    to   { opacity: 1; transform: translateY(0); }
+}

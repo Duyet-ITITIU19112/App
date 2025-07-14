@@ -1,0 +1,48 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>{{ filename }} — Preview / Edit</title>
+  <link rel="stylesheet" href="{{ url_for('static', filename='css/preview.css') }}">
+  <style>
+    html,body { margin:1rem; font-family:sans-serif; }
+    .toolbar { margin-bottom:0.5rem; }
+    .toolbar a, .toolbar button { margin-right:1rem; }
+    iframe { border:none; width:100%; height:80vh; }
+  </style>
+</head>
+<body>
+  <div class="toolbar">
+    <strong>{{ filename }}</strong>
+    <a href="#" onclick="window.close();return false;">✖️ Close</a>
+    |
+    <button id="btn-preview">👁️ Preview</button>
+    <button id="btn-edit">✏️ Edit</button>
+    <span id="status" class="status"></span>
+  </div>
+
+  {% if is_text %}
+    <!-- your text-edit code remains unchanged -->
+    {% if save_success %}
+      <span class="status">Saved ✅</span>
+    {% endif %}
+    <form method="post">
+      <textarea name="content">{{ content }}</textarea>
+      <p><button type="submit">💾 Save</button></p>
+    </form>
+  {% else %}
+    <iframe id="doc-frame" src="{{ edit_url }}"></iframe>
+  {% endif %}
+
+  <script>
+  {% if not is_text %}
+    document.getElementById("btn-preview").addEventListener("click", () => {
+      document.getElementById("doc-frame").src = "{{ preview_url }}";
+    });
+    document.getElementById("btn-edit").addEventListener("click", () => {
+      document.getElementById("doc-frame").src = "{{ edit_url }}";
+    });
+  {% endif %}
+  </script>
+</body>
+</html>

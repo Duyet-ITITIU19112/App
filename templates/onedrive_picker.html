@@ -1,0 +1,34 @@
+<!doctype html>
+<html>
+<head>
+  <title>OneDrive Picker</title>
+  <script type="text/javascript" src="https://js.live.net/v7.2/OneDrive.js"></script>
+</head>
+<body>
+  <h1>📁 Open OneDrive Picker</h1>
+  <button id="btnPick">Choose File</button>
+  <div id="result"></div>
+
+  <script>
+    const odOptions = {
+      clientId: "{{ client_id }}",
+      action: "query", // To fetch metadata; use "download" to get file URL
+      multiSelect: false,
+      advanced: {
+        redirectUri: "{{ redirect_uri }}"
+      },
+      success: files => {
+        const f = files.value[0];
+        document.getElementById("result").textContent =
+          `Selected: ${f.name} (${f.size} bytes)`;
+        // Optionally, post the file data to your backend here
+      },
+      cancel: () => console.log("Picker canceled"),
+      error: err => console.error(err)
+    };
+
+    document.getElementById("btnPick")
+      .addEventListener("click", () => OneDrive.open(odOptions));
+  </script>
+</body>
+</html>
