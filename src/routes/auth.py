@@ -12,7 +12,6 @@ from src.controllers.auth_controller import (
     get_or_create_user,
     refresh_token_if_needed
 )
-from src.models.subscription_model import Subscription
 from src.services.microsoft_graph import MicrosoftGraphService
 from src.utils.auth_utils import get_non_reserved_scopes
 from src.models import db
@@ -71,44 +70,6 @@ def callback():
     # log in
     login_user(user)
     session.pop("sync_started", None)
-
-    # prepare Graph service
-    svc = MicrosoftGraphService(
-        access_token=user.access_token,
-        refresh_token=user.refresh_token,
-        token_expires=user.token_expires,
-        user_id=user.id
-    )
-
-    # renew or create subscription
-    sub = Subscription.query.filter_by(user_id=user.id).first()
-    now = datetime.utcnow()
-    if not sub or sub.expires_at <= now:
-        # either no subscription yet, or it’s expired—(re)create
-        expiration = now + timedelta(days=2)
-        graph_sub = svc.create_subscription(
-            change_type="created,updated",
-            resource="/me/drive/root",
-            notification_url=current_app.config["NOTIFICATIONS_URL"],
-            client_state=str(user.id),
-            expiration_datetime=expiration.isoformat() + "Z"
-        )
-
-        if not sub:
-            sub = Subscription(
-                sub_id=graph_sub["id"],
-                user_id=user.id,
-                client_state=str(user.id),
-                expires_at=expiration
-            )
-            db.session.add(sub)
-        else:
-            sub.sub_id     = graph_sub["id"]
-            sub.expires_at = expiration
-
-        db.session.commit()
-        current_app.logger.info(f"Subscribed to Graph notifications: {sub.sub_id} (expires {sub.expires_at})")
-
     return redirect(url_for("files.browse"))
 
 

@@ -4,7 +4,37 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="c457582c-3f14-44e1-a2aa-b358e5473bfa" name="Changes" comment="e" />
+    <list default="true" id="c457582c-3f14-44e1-a2aa-b358e5473bfa" name="Changes" comment="e">
+      <change afterPath="$PROJECT_DIR$/flask_session/0e5df1df932e2b569a0c0cb4f6c24ed3" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/flask_session/28fbd3afa3992f446add201957d4ae9e" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/flask_session/4afaa04a8791b9f1cf08cfe9a22b4950" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.env" beforeDir="false" afterPath="$PROJECT_DIR$/.env" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/DockerFile" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/app.py" beforeDir="false" afterPath="$PROJECT_DIR$/app.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/flask_session/2029240f6d1128be89ddc32729463129" beforeDir="false" afterPath="$PROJECT_DIR$/flask_session/2029240f6d1128be89ddc32729463129" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/nginx/default.conf" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/nginx/nginx.conf" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/server/key-gpu" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/config/search_config.py" beforeDir="false" afterPath="$PROJECT_DIR$/src/config/search_config.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/controllers/ingest_controller.py" beforeDir="false" afterPath="$PROJECT_DIR$/src/controllers/ingest_controller.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/models/document_model.py" beforeDir="false" afterPath="$PROJECT_DIR$/src/models/document_model.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/models/query_model.py" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/models/result_model.py" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/routes/auth.py" beforeDir="false" afterPath="$PROJECT_DIR$/src/routes/auth.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/routes/files.py" beforeDir="false" afterPath="$PROJECT_DIR$/src/routes/files.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/routes/notifications.py" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/routes/search.py" beforeDir="false" afterPath="$PROJECT_DIR$/src/routes/search.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/services/crossencoder_service.py" beforeDir="false" afterPath="$PROJECT_DIR$/src/services/crossencoder_service.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/services/elastic_service.py" beforeDir="false" afterPath="$PROJECT_DIR$/src/services/elastic_service.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/services/embedding_service.py" beforeDir="false" afterPath="$PROJECT_DIR$/src/services/embedding_service.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/services/expansion_service.py" beforeDir="false" afterPath="$PROJECT_DIR$/src/services/expansion_service.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/services/microsoft_graph.py" beforeDir="false" afterPath="$PROJECT_DIR$/src/services/microsoft_graph.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/services/test.py" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/templates/dashboard.html" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/test.py" beforeDir="false" afterPath="$PROJECT_DIR$/test.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/webhook_app.py" beforeDir="false" />
+    </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
     <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
@@ -25,6 +55,7 @@
     </option>
     <option name="RECENT_GIT_ROOT_PATH" value="$PROJECT_DIR$" />
     <option name="ROOT_SYNC" value="SYNC" />
+    <option name="UPDATE_TYPE" value="REBASE" />
   </component>
   <component name="MarkdownSettingsMigration">
     <option name="stateVersion" value="1" />
@@ -235,17 +266,17 @@
       <method v="2" />
     </configuration>
     <list>
+      <item itemvalue="Python.app" />
       <item itemvalue="Python.__init__ (1)" />
       <item itemvalue="Python.__init__" />
-      <item itemvalue="Python.app" />
       <item itemvalue="Python.setup" />
       <item itemvalue="Python.test (1)" />
       <item itemvalue="Python.test" />
     </list>
     <recent_temporary>
       <list>
-        <item itemvalue="Python.__init__ (1)" />
         <item itemvalue="Python.test" />
+        <item itemvalue="Python.__init__ (1)" />
         <item itemvalue="Python.setup" />
         <item itemvalue="Python.__init__" />
         <item itemvalue="Python.test (1)" />
@@ -356,11 +387,30 @@
       <option name="project" value="LOCAL" />
       <updated>1752652696215</updated>
     </task>
-    <option name="localTasksCounter" value="12" />
+    <task id="LOCAL-00012" summary="e">
+      <option name="closed" value="true" />
+      <created>1752652969229</created>
+      <option name="number" value="00012" />
+      <option name="presentableId" value="LOCAL-00012" />
+      <option name="project" value="LOCAL" />
+      <updated>1752652969229</updated>
+    </task>
+    <option name="localTasksCounter" value="13" />
     <servers />
   </component>
   <component name="UnknownFeatures">
     <option featureType="com.intellij.fileTypeFactory" implementationName=".env" />
+  </component>
+  <component name="Vcs.Log.History.Properties">
+    <option name="COLUMN_ID_ORDER">
+      <list>
+        <option value="Default.Root" />
+        <option value="Default.Author" />
+        <option value="Default.Date" />
+        <option value="Default.Subject" />
+        <option value="Space.CommitStatus" />
+      </list>
+    </option>
   </component>
   <component name="Vcs.Log.Tabs.Properties">
     <option name="OPEN_GENERIC_TABS">

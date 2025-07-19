@@ -3,7 +3,7 @@ from sklearn.preprocessing import normalize
 import numpy as np
 from src.services.text_preprocessing import preprocess_bm25_query
 
-def expand_query(original_query: str, top_docs: list, k=5):
+def expand_query(original_query: str, top_docs: list, k=3):
     # Build corpus from the top_docs
     corpus = [doc.get("content", "") for doc in top_docs if doc.get("content")]
     if not corpus:

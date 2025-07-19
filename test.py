@@ -1,11 +1,9 @@
-from flask import Flask
-app = Flask(__name__)
+import torch
 
-@app.route("/")
-def hello():
-    print("▶ hello.py: got /")
-    return "👋 Hello!"
-
-if __name__ == "__main__":
-    print("▶ hello.py starting")
-    app.run(port=5001, use_reloader=False)
+print("PyTorch version:", torch.__version__)
+print("Built with CUDA:", torch.version.cuda)
+print("CUDA available:", torch.cuda.is_available())
+print("CUDA device count:", torch.cuda.device_count())
+if torch.cuda.is_available():
+    idx = torch.cuda.current_device()
+    print("Current CUDA device:", idx, torch.cuda.get_device_name(idx))

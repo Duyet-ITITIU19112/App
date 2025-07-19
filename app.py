@@ -1,13 +1,6 @@
 import os
-
-from src.routes.notifications import notifications_bp
-
-os.environ['TMPDIR'] = os.environ.get('TEMP', r'D:\Temp')
-os.environ['TEMP']  = os.environ.get('TEMP', r'D:\Temp')
-os.environ['TMP']   = os.environ.get('TMP',  r'D:\Temp')
 import tempfile
 tempfile.tempdir = None
-
 from flask import Flask, render_template
 from flask_session import Session
 from dotenv import load_dotenv
@@ -19,7 +12,6 @@ from src.routes.auth import auth_bp
 from src.routes.search import files_bp
 from src.routes.main import main_bp
 from src.cli.commands import backfill_hashes
-from src.routes.webhook import webhook_bp
 from src.models.user_model import User
 
 # Load environment variables early
@@ -36,8 +28,6 @@ def register_blueprints(app):
     app.register_blueprint(main_bp)
     app.register_blueprint(sync_bp)
     app.cli.add_command(backfill_hashes)
-    app.register_blueprint(notifications_bp)
-    app.register_blueprint(webhook_bp) 
 
 def create_app():
     app = Flask(__name__)
@@ -66,4 +56,4 @@ def create_app():
     return app
 
 if __name__ == "__main__":
-    create_app().run(host="0.0.0.0", port=5000, debug=False, threaded=True, use_reloader=False)
+    create_app().run(host="localhost", port=5000, debug=True, threaded=True, use_reloader=True)

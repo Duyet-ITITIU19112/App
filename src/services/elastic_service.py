@@ -80,6 +80,7 @@ def create_index_if_not_exists(client: Elasticsearch, index_name: str):
 
     _created_indices.add(index_name)
 
+
 def bulk_index_documents(docs: list, user_id: int):
     client = get_es()
     index_name = get_user_index(user_id)
@@ -88,16 +89,31 @@ def bulk_index_documents(docs: list, user_id: int):
     current_app.logger.debug(f"🛠 bulk_index_documents() called with {len(docs)} docs for user {user_id}")
 
     actions = []
-    for doc in docs:
+    for i, doc in enumerate(docs):
         try:
-            source = { **doc }
-            source["content"] = preprocess_bm25_document(source.get("content", ""))
+            current_app.logger.debug(f"🔍 DEBUG: Processing doc {i + 1}/{len(docs)}: {doc.get('filename', 'unknown')}")
+
+            source = {**doc}
+
+            # Debug the preprocessing step
+            original_content = source.get("content", "")
+            current_app.logger.debug(f"🔍 DEBUG: Original content length: {len(original_content)}")
+
+            try:
+                source["content"] = preprocess_bm25_document(original_content)
+                current_app.logger.debug(f"🔍 DEBUG: Preprocessed content length: {len(source['content'])}")
+            except Exception as e:
+                current_app.logger.error(f"❌ preprocess_bm25_document failed for {doc.get('filename')}: {e}")
+                source["content"] = original_content  # Fallback to original
+
             actions.append({
                 "_op_type": "index",
                 "_index": index_name,
                 "_id": doc["file_id"],
                 "_source": source
             })
+            current_app.logger.debug(f"🔍 DEBUG: Added action for doc {i + 1}")
+
         except Exception as e:
             current_app.logger.error(f"❌ Error preparing doc {doc.get('file_id')}: {e}")
 
@@ -105,24 +121,35 @@ def bulk_index_documents(docs: list, user_id: int):
         current_app.logger.info("📭 No documents to bulk-index.")
         return
 
+    current_app.logger.debug(f"🔍 DEBUG: Prepared {len(actions)} actions for bulk indexing")
     current_app.logger.debug(f"Sample action: {actions[0]}")
 
     try:
+        current_app.logger.debug(f"🔍 DEBUG: Starting bulk indexing to Elasticsearch...")
+
         success, errors = helpers.bulk(
             client,
             actions,
             raise_on_error=False,
-            stats_only=True,
-            request_timeout=30
+            stats_only=False,  # Changed to False to get detailed error info
+            request_timeout=60  # Increased timeout
         )
+
         current_app.logger.info(f"✅ Bulk indexed {success} docs for user {user_id}")
+        current_app.logger.debug(f"🔍 DEBUG: Bulk indexing completed successfully")
+
         if errors:
             current_app.logger.warning(f"❌ Bulk errors ({len(errors)}): {errors[:3]} …")
+
     except BulkIndexError as be:
         current_app.logger.error(f"🚨 BulkIndexError for user {user_id}: {be}")
+        current_app.logger.error(f"🚨 BulkIndexError details: {be.errors[:3]}")
     except Exception as e:
         current_app.logger.error(f"🚨 Exception in bulk_index_documents: {e}")
+        import traceback
+        current_app.logger.error(f"🚨 Traceback: {traceback.format_exc()}")
 
+    current_app.logger.debug(f"🔍 DEBUG: bulk_index_documents() function completed")
 def search_bm25(query: str, user_id: int, top_k: int):
     client = get_es()
     index_name = get_user_index(user_id)

@@ -1,39 +1,60 @@
 import torch
-import os
-from sentence_transformers import SentenceTransformer,util
-from src.config import search_config  # adjust this import if needed
+from torch.cuda.amp import autocast
+from sentence_transformers import SentenceTransformer, util
+from src.config.search_config import BIENCODER_MODEL_PATH
 
-model_path = search_config.BIENCODER_MODEL_PATH
+# ─── Load & prepare model (once at startup) ─────────────────────────────────
 
-if not os.path.exists(model_path):
-    raise RuntimeError(f"❌ Model path does not exist: {model_path}")
-
-# Load the bi-encoder model
-biencoder = SentenceTransformer(model_path)
-
-
-# Choose device
 device = "cuda" if torch.cuda.is_available() else "cpu"
+model  = SentenceTransformer(BIENCODER_MODEL_PATH, device=device)
 
-# Load model to appropriate device
-model = SentenceTransformer(model_path, device=device)
+# 1) Switch to eval mode immediately (fast)
+model.eval()
 
-def rerank_biencoder(query, docs, top_k=100):
+# ─── Reranker ────────────────────────────────────────────────────────────────
+
+def rerank_biencoder(query, docs, top_k=20, batch_size=1024):
+    print(f"🔍 Reranking using query: {query}")
     if not docs:
         return []
 
-    # Encode query and documents (on GPU if available)
-    query_embedding = model.encode(query, convert_to_tensor=True, device=device)
-    doc_texts = [doc["content"] for doc in docs]
-    doc_embeddings = model.encode(doc_texts, convert_to_tensor=True, device=device)
+    texts = [d["content"] for d in docs]
 
-    # Compute cosine similarity scores
-    similarities = util.cos_sim(query_embedding, doc_embeddings)[0]
+    # 2) Mixed-precision + no_grad block
+    with torch.no_grad(), autocast():
+        q_emb = model.encode(
+            query,
+            convert_to_tensor=True,
+            device=device
+        )
+        d_emb = model.encode(
+            texts,
+            convert_to_tensor=True,
+            device=device,
+            batch_size=batch_size
+        )
 
-    # Attach scores to docs
-    for doc, score in zip(docs, similarities):
-        doc["biencoder_score"] = float(score)
+    # 3) One-shot GPU cosine + top_k
+    hits = util.semantic_search(
+        q_emb,
+        d_emb,
+        top_k=top_k,
+        score_function=util.cos_sim
+    )[0]
 
-    # Sort and return top K
-    reranked = sorted(docs, key=lambda x: x["biencoder_score"], reverse=True)
-    return reranked[:top_k]
+    # 4) Map back into your docs and log top-5
+    reranked = []
+    for hit in hits:
+        idx                 = hit["corpus_id"]
+        docs[idx]["score"]  = float(hit["score"])
+        reranked.append(docs[idx])
+
+    print(f"📊 Bi-encoder Top-{len(reranked)} Results:")
+    for i, doc in enumerate(reranked[:5]):
+        sc    = doc["score"]
+        title = doc.get("title", doc.get("filename", "Untitled"))[:50]
+        print(f"  {i+1}. {sc:.4f} | {title}")
+    if len(reranked) > 5:
+        print(f"  ... and {len(reranked)-5} more")
+
+    return reranked

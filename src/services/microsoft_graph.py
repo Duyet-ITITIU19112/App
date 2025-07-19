@@ -337,133 +337,133 @@ class MicrosoftGraphService:
 
         return resp.json()
 
-    def create_subscription(
-        self,
-        change_type: str,
-        resource: str,
-        notification_url: str,
-        client_state: str,
-        expiration_datetime: str
-    ) -> dict:
-        """Create a Graph change-notification subscription."""
-        current_app.logger.debug("📡 Creating subscription for resource: %s", resource)
-        current_app.logger.debug("📡 Notification URL: %s", notification_url)
-        current_app.logger.debug("📡 Change type: %s", change_type)
-        current_app.logger.debug("📡 Expiration: %s", expiration_datetime)
-        
-        # Ensure we have a valid token before making the request
-        self._ensure_token()
-        
-        url = "https://graph.microsoft.com/v1.0/subscriptions"
-        body = {
-            "changeType":        change_type,
-            "notificationUrl":   notification_url,
-            "resource":          resource,
-            "clientState":       client_state,
-            "expirationDateTime": expiration_datetime
-        }
-        
-        current_app.logger.debug("📡 Subscription payload: %s", body)
-        
-        # Use the class headers that include the Bearer token
-        resp = requests.post(url, json=body, headers=self.headers)
-        
-        # Add better error handling with detailed logging
-        if resp.status_code == 400:
-            current_app.logger.error(f"❌ Subscription creation failed (400): {resp.text}")
-            current_app.logger.error(f"❌ Request body was: {body}")
-            raise OneDriveServiceError(f"Bad request: {resp.text}")
-        elif resp.status_code == 401:
-            current_app.logger.error("❌ Unauthorized (401) - token may be invalid")
-            current_app.logger.error(f"❌ Current token expires at: {self.token_expires}")
-            current_app.logger.error(f"❌ Current time: {time.time()}")
-            raise OneDriveServiceError("Unauthorized - please re-authenticate")
-        elif resp.status_code == 403:
-            current_app.logger.error("❌ Forbidden (403) - insufficient permissions")
-            raise OneDriveServiceError("Insufficient permissions for subscription")
-        elif resp.status_code != 201:
-            current_app.logger.error(f"❌ Subscription creation failed ({resp.status_code}): {resp.text}")
-            raise OneDriveServiceError(f"Subscription failed [{resp.status_code}]: {resp.text}")
-        
-        current_app.logger.debug("✅ Subscription created successfully")
-        return resp.json()
-
-    def renew_subscription(
-        self,
-        subscription_id: str,
-        new_expiration_datetime: str
-    ) -> dict:
-        """Extend an existing subscription's expiration."""
-        current_app.logger.debug("🔄 Renewing subscription: %s", subscription_id)
-        
-        # Ensure we have a valid token before making the request
-        self._ensure_token()
-        
-        url = f"https://graph.microsoft.com/v1.0/subscriptions/{subscription_id}"
-        body = {"expirationDateTime": new_expiration_datetime}
-        
-        current_app.logger.debug("🔄 Renewal payload: %s", body)
-        
-        # Use the class headers that include the Bearer token
-        resp = requests.patch(url, json=body, headers=self.headers)
-        
-        # Add better error handling
-        if resp.status_code == 400:
-            current_app.logger.error(f"❌ Subscription renewal failed (400): {resp.text}")
-            raise OneDriveServiceError(f"Bad request: {resp.text}")
-        elif resp.status_code == 404:
-            current_app.logger.error("❌ Subscription not found (404)")
-            raise OneDriveServiceError("Subscription not found")
-        elif resp.status_code == 401:
-            current_app.logger.error("❌ Unauthorized (401) - token may be invalid")
-            raise OneDriveServiceError("Unauthorized - please re-authenticate")
-        elif resp.status_code != 200:
-            current_app.logger.error(f"❌ Subscription renewal failed ({resp.status_code}): {resp.text}")
-            raise OneDriveServiceError(f"Renewal failed [{resp.status_code}]: {resp.text}")
-        
-        current_app.logger.debug("✅ Subscription renewed successfully")
-        return resp.json()
-
-    def delete_subscription(self, subscription_id: str) -> bool:
-        """Delete an existing subscription."""
-        current_app.logger.debug("🗑️ Deleting subscription: %s", subscription_id)
-        
-        # Ensure we have a valid token before making the request
-        self._ensure_token()
-        
-        url = f"https://graph.microsoft.com/v1.0/subscriptions/{subscription_id}"
-        resp = requests.delete(url, headers=self.headers)
-        
-        if resp.status_code == 404:
-            current_app.logger.warning("⚠️ Subscription not found (404) - may already be deleted")
-            return True
-        elif resp.status_code == 401:
-            current_app.logger.error("❌ Unauthorized (401) - token may be invalid")
-            raise OneDriveServiceError("Unauthorized - please re-authenticate")
-        elif resp.status_code != 204:
-            current_app.logger.error(f"❌ Subscription deletion failed ({resp.status_code}): {resp.text}")
-            raise OneDriveServiceError(f"Deletion failed [{resp.status_code}]: {resp.text}")
-        
-        current_app.logger.debug("✅ Subscription deleted successfully")
-        return True
-
-    def list_subscriptions(self) -> list:
-        """List all active subscriptions."""
-        current_app.logger.debug("📋 Listing all subscriptions...")
-        
-        # Ensure we have a valid token before making the request
-        self._ensure_token()
-        
-        url = "https://graph.microsoft.com/v1.0/subscriptions"
-        resp = requests.get(url, headers=self.headers)
-        
-        if resp.status_code == 401:
-            current_app.logger.error("❌ Unauthorized (401) - token may be invalid")
-            raise OneDriveServiceError("Unauthorized - please re-authenticate")
-        elif resp.status_code != 200:
-            current_app.logger.error(f"❌ Failed to list subscriptions ({resp.status_code}): {resp.text}")
-            raise OneDriveServiceError(f"List failed [{resp.status_code}]: {resp.text}")
-        
-        subscriptions = resp.json().get("value", [])
-        current_app.logger.debug(f"✅ Found {len(subscriptions)} subscriptions")
-        return subscriptions
+    # def create_subscription(
+    #     self,
+    #     change_type: str,
+    #     resource: str,
+    #     notification_url: str,
+    #     client_state: str,
+    #     expiration_datetime: str
+    # ) -> dict:
+    #     """Create a Graph change-notification subscription."""
+    #     current_app.logger.debug("📡 Creating subscription for resource: %s", resource)
+    #     current_app.logger.debug("📡 Notification URL: %s", notification_url)
+    #     current_app.logger.debug("📡 Change type: %s", change_type)
+    #     current_app.logger.debug("📡 Expiration: %s", expiration_datetime)
+    #
+    #     # Ensure we have a valid token before making the request
+    #     self._ensure_token()
+    #
+    #     url = "https://graph.microsoft.com/v1.0/subscriptions"
+    #     body = {
+    #         "changeType":        change_type,
+    #         "notificationUrl":   notification_url,
+    #         "resource":          resource,
+    #         "clientState":       client_state,
+    #         "expirationDateTime": expiration_datetime
+    #     }
+    #
+    #     current_app.logger.debug("📡 Subscription payload: %s", body)
+    #
+    #     # Use the class headers that include the Bearer token
+    #     resp = requests.post(url, json=body, headers=self.headers)
+    #
+    #     # Add better error handling with detailed logging
+    #     if resp.status_code == 400:
+    #         current_app.logger.error(f"❌ Subscription creation failed (400): {resp.text}")
+    #         current_app.logger.error(f"❌ Request body was: {body}")
+    #         raise OneDriveServiceError(f"Bad request: {resp.text}")
+    #     elif resp.status_code == 401:
+    #         current_app.logger.error("❌ Unauthorized (401) - token may be invalid")
+    #         current_app.logger.error(f"❌ Current token expires at: {self.token_expires}")
+    #         current_app.logger.error(f"❌ Current time: {time.time()}")
+    #         raise OneDriveServiceError("Unauthorized - please re-authenticate")
+    #     elif resp.status_code == 403:
+    #         current_app.logger.error("❌ Forbidden (403) - insufficient permissions")
+    #         raise OneDriveServiceError("Insufficient permissions for subscription")
+    #     elif resp.status_code != 201:
+    #         current_app.logger.error(f"❌ Subscription creation failed ({resp.status_code}): {resp.text}")
+    #         raise OneDriveServiceError(f"Subscription failed [{resp.status_code}]: {resp.text}")
+    #
+    #     current_app.logger.debug("✅ Subscription created successfully")
+    #     return resp.json()
+    #
+    # def renew_subscription(
+    #     self,
+    #     subscription_id: str,
+    #     new_expiration_datetime: str
+    # ) -> dict:
+    #     """Extend an existing subscription's expiration."""
+    #     current_app.logger.debug("🔄 Renewing subscription: %s", subscription_id)
+    #
+    #     # Ensure we have a valid token before making the request
+    #     self._ensure_token()
+    #
+    #     url = f"https://graph.microsoft.com/v1.0/subscriptions/{subscription_id}"
+    #     body = {"expirationDateTime": new_expiration_datetime}
+    #
+    #     current_app.logger.debug("🔄 Renewal payload: %s", body)
+    #
+    #     # Use the class headers that include the Bearer token
+    #     resp = requests.patch(url, json=body, headers=self.headers)
+    #
+    #     # Add better error handling
+    #     if resp.status_code == 400:
+    #         current_app.logger.error(f"❌ Subscription renewal failed (400): {resp.text}")
+    #         raise OneDriveServiceError(f"Bad request: {resp.text}")
+    #     elif resp.status_code == 404:
+    #         current_app.logger.error("❌ Subscription not found (404)")
+    #         raise OneDriveServiceError("Subscription not found")
+    #     elif resp.status_code == 401:
+    #         current_app.logger.error("❌ Unauthorized (401) - token may be invalid")
+    #         raise OneDriveServiceError("Unauthorized - please re-authenticate")
+    #     elif resp.status_code != 200:
+    #         current_app.logger.error(f"❌ Subscription renewal failed ({resp.status_code}): {resp.text}")
+    #         raise OneDriveServiceError(f"Renewal failed [{resp.status_code}]: {resp.text}")
+    #
+    #     current_app.logger.debug("✅ Subscription renewed successfully")
+    #     return resp.json()
+    #
+    # def delete_subscription(self, subscription_id: str) -> bool:
+    #     """Delete an existing subscription."""
+    #     current_app.logger.debug("🗑️ Deleting subscription: %s", subscription_id)
+    #
+    #     # Ensure we have a valid token before making the request
+    #     self._ensure_token()
+    #
+    #     url = f"https://graph.microsoft.com/v1.0/subscriptions/{subscription_id}"
+    #     resp = requests.delete(url, headers=self.headers)
+    #
+    #     if resp.status_code == 404:
+    #         current_app.logger.warning("⚠️ Subscription not found (404) - may already be deleted")
+    #         return True
+    #     elif resp.status_code == 401:
+    #         current_app.logger.error("❌ Unauthorized (401) - token may be invalid")
+    #         raise OneDriveServiceError("Unauthorized - please re-authenticate")
+    #     elif resp.status_code != 204:
+    #         current_app.logger.error(f"❌ Subscription deletion failed ({resp.status_code}): {resp.text}")
+    #         raise OneDriveServiceError(f"Deletion failed [{resp.status_code}]: {resp.text}")
+    #
+    #     current_app.logger.debug("✅ Subscription deleted successfully")
+    #     return True
+    #
+    # def list_subscriptions(self) -> list:
+    #     """List all active subscriptions."""
+    #     current_app.logger.debug("📋 Listing all subscriptions...")
+    #
+    #     # Ensure we have a valid token before making the request
+    #     self._ensure_token()
+    #
+    #     url = "https://graph.microsoft.com/v1.0/subscriptions"
+    #     resp = requests.get(url, headers=self.headers)
+    #
+    #     if resp.status_code == 401:
+    #         current_app.logger.error("❌ Unauthorized (401) - token may be invalid")
+    #         raise OneDriveServiceError("Unauthorized - please re-authenticate")
+    #     elif resp.status_code != 200:
+    #         current_app.logger.error(f"❌ Failed to list subscriptions ({resp.status_code}): {resp.text}")
+    #         raise OneDriveServiceError(f"List failed [{resp.status_code}]: {resp.text}")
+    #
+    #     subscriptions = resp.json().get("value", [])
+    #     current_app.logger.debug(f"✅ Found {len(subscriptions)} subscriptions")
+    #     return subscriptions

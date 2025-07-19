@@ -43,6 +43,9 @@ def browse():
     user = current_user
     svc = get_graph_service_for_user()
 
+    current_app.logger.info(f"🔍 DEBUG: /browse route hit for user {user.id}")
+    current_app.logger.info(f"🔍 DEBUG: session.get('sync_started'): {session.get('sync_started')}")
+
     # 1) Immediate upload & index-on-upload
     if request.method == "POST":
         file = request.files.get("file")
@@ -68,15 +71,26 @@ def browse():
     # 2) One-time background delta-sync on first browse after login
     if not session.get("sync_started"):
         current_app.logger.info(f"▶️ Enqueueing background delta-sync for user {user.id}")
-        start_user_ingestion_async(user.id)
+        current_app.logger.info(f"🔍 DEBUG: About to call start_user_ingestion_async({user.id})")
+
+        try:
+            start_user_ingestion_async(user.id)
+            current_app.logger.info(f"🔍 DEBUG: start_user_ingestion_async called successfully")
+        except Exception as e:
+            current_app.logger.error(f"🔍 DEBUG: Exception calling start_user_ingestion_async: {e}")
+            raise
+
         session["sync_started"] = True
+        current_app.logger.info(f"🔍 DEBUG: session['sync_started'] set to True")
+    else:
+        current_app.logger.info(f"🔍 DEBUG: Skipping ingestion - sync_started already True")
 
     # 3) Decide: full-text search or folder listing
     q = request.args.get("q", "").strip()
     folder_id = request.args.get("folder_id")
 
     if q:
-        current_app.logger.info(f"User {user.id} searching for “{q}”")
+        current_app.logger.info(f"User {user.id} searching for '{q}'")
         items = full_search_pipeline(user_query=q, user_id=user.id)
     else:
         try:
