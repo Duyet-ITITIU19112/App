@@ -7,12 +7,9 @@ from src.config.search_config import BIENCODER_MODEL_PATH
 
 device = "cuda" if torch.cuda.is_available() else "cpu"
 model  = SentenceTransformer(BIENCODER_MODEL_PATH, device=device)
-
 # 1) Switch to eval mode immediately (fast)
 model.eval()
-
 # ─── Reranker ────────────────────────────────────────────────────────────────
-
 def rerank_biencoder(query, docs, top_k=20, batch_size=1024):
     print(f"🔍 Reranking using query: {query}")
     if not docs:

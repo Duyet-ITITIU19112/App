@@ -7,7 +7,6 @@ class OneDriveServiceError(Exception):
 
 
 def fetch_onedrive_files(access_token):
-
     # Define the Microsoft Graph API endpoint
     url = "https://graph.microsoft.com/v1.0/me/drive/root/children"
     headers = {"Authorization": f"Bearer {access_token}"}

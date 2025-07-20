@@ -53,13 +53,6 @@ def preprocess_bm25_query(text):
     tokens = tokenize_doc(text, remove_stopwords=True, lemmatize=False, stem=True)
     return ' '.join(tokens)
 
-
-def preprocess_bm25_document(text):
-    text = normalize(text)
-    tokens = tokenize_doc(text, remove_stopwords=True, lemmatize=False, stem=True)
-    return ' '.join(tokens)
-
-
 def preprocess_for_encoder(text):
     text = normalize(text)  # No compound split
     tokens = tokenize_doc(text, remove_stopwords=False, lemmatize=True, stem=False)

@@ -9,10 +9,7 @@ from dateutil.parser import parse as parse_datetime
 from src.models import db, Document
 from src.services.microsoft_graph import MicrosoftGraphService
 from src.services.parser import parse_stream
-from src.services.text_preprocessing import (
-    preprocess_bm25_document,
-    preprocess_bm25_query
-)
+
 
 load_dotenv()
 
@@ -85,34 +82,19 @@ def bulk_index_documents(docs: list, user_id: int):
     client = get_es()
     index_name = get_user_index(user_id)
     create_index_if_not_exists(client, index_name)
-
-    current_app.logger.debug(f"🛠 bulk_index_documents() called with {len(docs)} docs for user {user_id}")
-
     actions = []
     for i, doc in enumerate(docs):
         try:
-            current_app.logger.debug(f"🔍 DEBUG: Processing doc {i + 1}/{len(docs)}: {doc.get('filename', 'unknown')}")
 
             source = {**doc}
-
-            # Debug the preprocessing step
             original_content = source.get("content", "")
-            current_app.logger.debug(f"🔍 DEBUG: Original content length: {len(original_content)}")
-
-            try:
-                source["content"] = preprocess_bm25_document(original_content)
-                current_app.logger.debug(f"🔍 DEBUG: Preprocessed content length: {len(source['content'])}")
-            except Exception as e:
-                current_app.logger.error(f"❌ preprocess_bm25_document failed for {doc.get('filename')}: {e}")
-                source["content"] = original_content  # Fallback to original
-
+            source["content"] = original_content
             actions.append({
                 "_op_type": "index",
                 "_index": index_name,
                 "_id": doc["file_id"],
                 "_source": source
             })
-            current_app.logger.debug(f"🔍 DEBUG: Added action for doc {i + 1}")
 
         except Exception as e:
             current_app.logger.error(f"❌ Error preparing doc {doc.get('file_id')}: {e}")
@@ -150,14 +132,13 @@ def bulk_index_documents(docs: list, user_id: int):
         current_app.logger.error(f"🚨 Traceback: {traceback.format_exc()}")
 
     current_app.logger.debug(f"🔍 DEBUG: bulk_index_documents() function completed")
+
+
 def search_bm25(query: str, user_id: int, top_k: int):
     client = get_es()
     index_name = get_user_index(user_id)
-    # no longer calling create_index_if_not_exists here
-
-    q = preprocess_bm25_query(query)
-    current_app.logger.debug(f"🔍 search_bm25 on {index_name} with query '{q}', top_k={top_k}")
-
+    q = query.strip()
+    current_app.logger.debug(f"🔍 search_bm25 on {index_name} with raw query '{q}', top_k={top_k}")
     body = {
         "size": top_k,
         "query": {
@@ -192,6 +173,7 @@ def search_bm25(query: str, user_id: int, top_k: int):
             "content": src.get("content")
         })
     return results
+
 
 def ingest_single_onedrive_file(user, item):
     name = item.get("name", "").lower()
@@ -243,6 +225,7 @@ def ingest_single_onedrive_file(user, item):
 
     db.session.commit()
 
+    # ✅ Store raw content instead of preprocessing
     single_doc = {
         "user_id":      user.id,
         "file_id":      fid,
@@ -252,14 +235,18 @@ def ingest_single_onedrive_file(user, item):
         "size":         item.get("size"),
         "web_url":      item.get("webUrl"),
         "content_hash": h,
-        "content":      preprocess_bm25_document(text),
+        "content":      text,  # Raw text - let ES analyzer handle preprocessing
         "source":       "onedrive",
     }
+
+    # Commented out custom preprocessing - let ES handle it
+    # single_doc["content"] = preprocess_bm25_document(text)
 
     client = get_es()
     index_name = get_user_index(user.id)
     create_index_if_not_exists(client, index_name)
     client.index(index=index_name, id=fid, body=single_doc)
+
 
 def get_indexed_ids_and_hashes(user_id: int):
     client = get_es()

@@ -16,7 +16,6 @@ def rerank_crossencoder(query, docs, top_k=5, batch_size=1024):
         return []
 
     pairs = [(query, doc["content"]) for doc in docs]
-
     # Predict relevance scores with appropriate batch size
     scores = model.predict(pairs, batch_size=batch_size)
 

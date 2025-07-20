@@ -24,19 +24,13 @@ def login():
     ms_app = get_msal_app()
     state = "int-" + uuid.uuid4().hex
     session["ms_state"] = state
-
     scopes = get_non_reserved_scopes()
-    if not scopes:
-        current_app.logger.warning("⚠️ No scopes defined for Microsoft OAuth.")
-        return "No scopes configured", 500
-
     auth_url = ms_app.get_authorization_request_url(
         scopes=scopes,
         redirect_uri=current_app.config["REDIRECT_URI"],
         prompt="select_account",
         state=state
     )
-    current_app.logger.debug("🌐 Redirecting to Microsoft Login: %s", auth_url)
     return redirect(auth_url)
 
 

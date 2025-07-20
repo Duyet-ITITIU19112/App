@@ -1,0 +1,8 @@
+curl "http://localhost:9200/_cat/indices?v"
+
+curl -X GET "http://localhost:9200/my_index/_search?size=1&sort=_doc" -H 'Content-Type: application/json'
+
+If You Want to See All Fields
+
+
+curl -X GET "http://localhost:9200/my_index/_search?size=1&sort=_doc&pretty"
